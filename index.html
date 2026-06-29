@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>NBA Rank and Predict</title>
+<title>Rank and Predict</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -13,7 +13,14 @@
     --card:#f3f1e9; --card-edge:#d9d5c5; --ink:#14243f;
     --cream:#f3f1e9; --cream-dim:#aeb9d0;
     --green:#43b06a; --green-press:#379159;
+    --accent:var(--green);
     --line:#33508c; --focus:#ffd54a; --rowH:60px;
+  }
+  body.wnba{
+    --accent:#ff6b00;
+    --bg-top:#3d1a00;
+    --bg-bot:#220e00;
+    --line:#8b4a1a;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{margin:0;padding:0;}
@@ -28,36 +35,36 @@
 
   /* Header */
   header{text-align:center;margin:6px 0 14px;}
-  h1{
-    font-family:'Bagel Fat One',cursive;font-weight:400;
-    font-size:clamp(30px,9vw,48px);line-height:.96;margin:0;color:var(--cream);
-    letter-spacing:.5px;text-shadow:0 3px 0 rgba(0,0,0,.22);
-  }
+  h1{font-family:'Bagel Fat One',cursive;font-weight:400;font-size:clamp(28px,8.5vw,46px);line-height:.96;margin:0;color:var(--cream);letter-spacing:.5px;text-shadow:0 3px 0 rgba(0,0,0,.22);}
+  body.wnba h1{text-shadow:0 3px 0 rgba(255,107,0,.5);}
   .sub{font-weight:700;font-size:14px;letter-spacing:.3px;color:var(--cream);margin-top:8px;opacity:.9;}
+
+  /* League toggle */
+  .league-toggle{display:flex;background:rgba(0,0,0,.25);border:2px solid rgba(255,255,255,.1);border-radius:14px;padding:4px;margin:14px 0 4px;}
+  .league-toggle button{flex:1;appearance:none;border:0;background:transparent;color:var(--cream-dim);font-family:inherit;font-weight:800;font-size:14px;letter-spacing:1.6px;padding:12px 0;border-radius:10px;cursor:pointer;transition:.18s;}
+  .league-toggle button[aria-pressed="true"]{background:var(--accent);color:#fff;}
+  .league-toggle button:focus-visible{outline:3px solid var(--focus);outline-offset:2px;}
 
   /* Pages */
   .page{display:none;}
   .page.active{display:block;}
 
-  /* Toggle */
-  .toggle{display:flex;background:#0a1733;border:2px solid #24386a;border-radius:14px;padding:4px;margin:18px 0 10px;}
-  .toggle button{flex:1;appearance:none;border:0;background:transparent;color:var(--cream-dim);
-    font-family:inherit;font-weight:800;font-size:15px;letter-spacing:1.2px;padding:13px 0;border-radius:10px;cursor:pointer;transition:.18s;}
+  /* Conference toggle */
+  .toggle{display:flex;background:rgba(0,0,0,.25);border:2px solid rgba(255,255,255,.1);border-radius:14px;padding:4px;margin:14px 0 10px;}
+  .toggle button{flex:1;appearance:none;border:0;background:transparent;color:var(--cream-dim);font-family:inherit;font-weight:800;font-size:15px;letter-spacing:1.2px;padding:13px 0;border-radius:10px;cursor:pointer;transition:.18s;}
   .toggle button[aria-pressed="true"]{background:var(--cream);color:var(--ink);}
   .toggle button:focus-visible{outline:3px solid var(--focus);outline-offset:2px;}
 
-  .hint{font-size:12px;color:var(--cream-dim);margin:4px 2px 14px;line-height:1.45;}
+  .hint{font-size:12px;color:var(--cream-dim);margin:8px 2px 14px;line-height:1.45;}
 
   /* Standings list */
   .list{position:relative;}
   .row{position:relative;display:flex;align-items:center;gap:10px;height:var(--rowH);margin-bottom:9px;user-select:none;}
   .seed{width:30px;flex:none;text-align:right;font-weight:800;font-size:21px;font-variant-numeric:tabular-nums;color:var(--cream);}
-  .card{flex:1;display:flex;align-items:center;gap:11px;height:100%;background:var(--card);border:1px solid var(--card-edge);
-    border-radius:12px;padding:0 8px 0 9px;box-shadow:0 1px 2px rgba(0,0,0,.25);}
+  .card{flex:1;display:flex;align-items:center;gap:11px;height:100%;background:var(--card);border:1px solid var(--card-edge);border-radius:12px;padding:0 8px 0 9px;box-shadow:0 1px 2px rgba(0,0,0,.25);}
   .badge{width:34px;height:34px;flex:none;position:relative;display:flex;align-items:center;justify-content:center;}
   .logo{width:34px;height:34px;object-fit:contain;display:block;}
-  .chip{position:absolute;inset:0;border-radius:8px;display:none;align-items:center;justify-content:center;
-    color:#fff;font-weight:800;font-size:11px;letter-spacing:.3px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);}
+  .chip{position:absolute;inset:0;border-radius:8px;display:none;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:11px;letter-spacing:.3px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);}
   .name{flex:1;color:var(--ink);font-weight:700;font-size:16.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .nudge{display:flex;flex-direction:column;flex:none;}
   .nudge button{appearance:none;border:0;background:transparent;color:#8b93a6;cursor:pointer;width:30px;height:24px;display:flex;align-items:center;justify-content:center;padding:0;}
@@ -70,12 +77,10 @@
   .row.dragging{z-index:999;box-shadow:none;}
   .row.dragging .card{box-shadow:0 14px 30px rgba(0,0,0,.45);transform:scale(1.015);border-color:#fff;}
   .placeholder{height:var(--rowH);margin-bottom:9px;border-radius:12px;border:2px dashed #3a59a0;background:rgba(58,89,160,.12);}
-  .after-playin{margin-bottom:30px;}
-  .after-playin::after{content:"PLAY-IN";position:absolute;left:40px;right:0;bottom:-20px;height:0;
-    border-top:2px dotted #7c8db5;font-size:9px;font-weight:800;letter-spacing:2px;color:#7c8db5;text-align:right;padding-top:2px;line-height:0;}
-  .after-lottery{margin-bottom:30px;}
-  .after-lottery::after{content:"LOTTERY";position:absolute;left:40px;right:0;bottom:-20px;height:0;
-    border-top:2px solid #3a4f7d;font-size:9px;font-weight:800;letter-spacing:2px;color:var(--cream-dim);text-align:right;padding-top:2px;line-height:0;}
+  .cut{margin-bottom:30px;}
+  .cut::after{content:attr(data-line);position:absolute;left:40px;right:0;bottom:-20px;height:0;font-size:9px;font-weight:800;letter-spacing:2px;text-align:right;padding-top:2px;line-height:0;}
+  .cut-dotted::after{border-top:2px dotted #7c8db5;color:#7c8db5;}
+  .cut-solid::after{border-top:2px solid #3a4f7d;color:var(--cream-dim);}
 
   /* Bracket */
   .bk-section-title{font-weight:800;font-size:13px;letter-spacing:1.5px;color:var(--cream-dim);text-transform:uppercase;margin:18px 2px 10px;}
@@ -83,13 +88,12 @@
   .bk{position:relative;display:flex;gap:32px;width:max-content;height:440px;}
   .bk-col{width:118px;display:flex;flex-direction:column;justify-content:space-around;flex:none;}
   .bk-match{height:84px;display:flex;flex-direction:column;justify-content:center;gap:8px;position:relative;z-index:1;}
-  .bk-team{height:38px;display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--card-edge);
-    border-radius:9px;padding:0 7px;cursor:default;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:.12s;overflow:hidden;}
+  .bk-team{height:38px;display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--card-edge);border-radius:9px;padding:0 7px;cursor:default;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:.12s;overflow:hidden;}
   .bk-team.pickable{cursor:pointer;}
   .bk-team.pickable:active{transform:scale(.97);}
-  .bk-team.won{outline:2px solid var(--green);outline-offset:-1px;}
+  .bk-team.won{outline:2px solid var(--accent);outline-offset:-1px;}
   .bk-team.lost{opacity:.42;}
-  .bk-team.empty{background:rgba(255,255,255,.05);border:1px dashed #33508c;box-shadow:none;justify-content:center;}
+  .bk-team.empty{background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.15);box-shadow:none;justify-content:center;}
   .bk-seed{font-size:11px;font-weight:800;color:#7a849b;width:13px;text-align:center;flex:none;font-variant-numeric:tabular-nums;}
   .bk-logo{width:22px;height:22px;flex:none;position:relative;display:flex;align-items:center;justify-content:center;}
   .bk-logo img{width:22px;height:22px;object-fit:contain;display:block;}
@@ -97,17 +101,17 @@
   .bk-name{font-size:12.5px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .bk-wait{font-size:11px;color:#5f6f95;font-weight:600;}
   svg.bk-lines{position:absolute;top:0;left:0;pointer-events:none;z-index:0;overflow:visible;}
-  .bk-line{fill:none;stroke:#33508c;stroke-width:2;}
+  .bk-line{fill:none;stroke:var(--line);stroke-width:2;}
 
-  /* Finals */
+  /* Finals / Champion */
   .finals{display:flex;flex-direction:column;align-items:center;gap:14px;margin:8px 0 10px;}
   .finals-row{display:flex;align-items:stretch;gap:12px;width:100%;max-width:440px;}
   .finals .bk-team{height:54px;flex:1;border-radius:12px;}
   .finals .bk-name{font-size:15px;}
   .finals .bk-logo,.finals .bk-logo img{width:26px;height:26px;}
   .finals-vs{display:flex;align-items:center;font-weight:900;color:var(--cream-dim);font-size:14px;}
-  .champ-banner{width:100%;max-width:440px;text-align:center;background:linear-gradient(180deg,#16315f,#102447);
-    border:1px solid #2f4f8f;border-radius:16px;padding:16px;}
+  .champ-banner{width:100%;max-width:440px;text-align:center;background:linear-gradient(180deg,#16315f,#102447);border:1px solid #2f4f8f;border-radius:16px;padding:16px;}
+  body.wnba .champ-banner{background:linear-gradient(180deg,#4a2200,#2e1400);border-color:#a05020;}
   .champ-label{font-size:11px;letter-spacing:2px;font-weight:800;color:#ffd54a;}
   .champ-team{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:9px;font-weight:800;font-size:20px;color:var(--cream);}
   .champ-logo{width:36px;height:36px;position:relative;display:inline-flex;align-items:center;justify-content:center;flex:none;}
@@ -115,23 +119,58 @@
   .champ-logo .bk-chip{font-size:11px;border-radius:8px;}
   .champ-empty{color:var(--cream-dim);font-size:13px;margin-top:9px;font-weight:600;}
 
+  /* All-Stars */
+  .as-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 2px 4px;}
+  .as-count{font-size:12px;font-weight:700;color:var(--cream-dim);}
+  .as-source{font-size:11px;font-weight:700;color:#6f7ea3;}
+  .as-group-title{font-weight:800;font-size:12px;letter-spacing:1.5px;color:var(--cream-dim);text-transform:uppercase;margin:14px 2px 8px;}
+  .as-slot{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--card-edge);border-radius:12px;padding:0 8px 0 10px;height:54px;margin-bottom:8px;cursor:pointer;transition:.12s;box-shadow:0 1px 2px rgba(0,0,0,.25);}
+  .as-slot:active{transform:scale(.99);}
+  .as-slot.empty{background:rgba(255,255,255,.05);border:1px dashed #33508c;box-shadow:none;}
+  .as-pos{flex:none;font-size:10px;font-weight:800;letter-spacing:.5px;color:#fff;background:#2c477f;border-radius:6px;padding:5px 0;width:82px;text-align:center;}
+  body.wnba .as-pos{background:#b05a1a;}
+  .as-logo{flex:none;width:28px;height:28px;position:relative;display:flex;align-items:center;justify-content:center;}
+  .as-logo img{width:28px;height:28px;object-fit:contain;display:block;}
+  .as-initials{flex:none;width:28px;height:28px;border-radius:7px;background:#46557a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;}
+  .as-name{flex:1;color:var(--ink);font-weight:700;font-size:15.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .as-empty-label{flex:1;color:#6f7ea3;font-weight:600;font-size:14px;}
+  .as-plus{flex:none;color:#7c8db5;font-size:22px;font-weight:700;width:30px;text-align:center;}
+  .as-clear{flex:none;width:30px;height:30px;border:0;background:transparent;color:#9aa1b2;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .as-clear:active{background:rgba(0,0,0,.06);color:var(--ink);}
+  .as-clear svg{width:16px;height:16px;}
+
+  /* Picker sheet */
+  .sheet-backdrop{position:fixed;inset:0;background:rgba(4,9,22,.55);z-index:1800;opacity:0;pointer-events:none;transition:.2s;}
+  .sheet-backdrop.show{opacity:1;pointer-events:auto;}
+  .sheet{position:fixed;left:0;right:0;bottom:0;z-index:1900;background:#0e2147;border-top:1px solid #2c477f;border-radius:18px 18px 0 0;max-height:78vh;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .24s ease;padding-bottom:env(safe-area-inset-bottom);}
+  body.wnba .sheet{background:#2e1800;border-top-color:#a05020;}
+  .sheet.show{transform:translateY(0);}
+  .sheet-head{display:flex;align-items:center;gap:10px;padding:14px 16px 8px;}
+  .sheet-title{flex:1;font-weight:800;font-size:15px;color:var(--cream);}
+  .sheet-close{flex:none;width:32px;height:32px;border:0;background:#1a2e54;color:var(--cream);border-radius:9px;cursor:pointer;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;}
+  .sheet-search{margin:0 16px 10px;}
+  .sheet-search input{width:100%;box-sizing:border-box;background:#0a1733;border:1px solid #2c477f;border-radius:10px;color:var(--cream);font-family:inherit;font-size:15px;padding:11px 12px;outline:none;}
+  body.wnba .sheet-search input{background:#1e1000;border-color:#a05020;}
+  .sheet-search input:focus{border-color:var(--accent);}
+  .sheet-search input::placeholder{color:#5f6f95;}
+  .sheet-list{overflow-y:auto;padding:0 12px 14px;-webkit-overflow-scrolling:touch;}
+  .cand{display:flex;align-items:center;gap:10px;padding:9px 8px;border-radius:10px;cursor:pointer;}
+  .cand:active{background:rgba(255,255,255,.06);}
+  .cand-name{flex:1;color:var(--cream);font-weight:600;font-size:15px;}
+  .cand-team{font-size:11px;color:var(--cream-dim);font-weight:700;}
+  .cand-add{display:flex;align-items:center;gap:8px;padding:11px 8px;border-radius:10px;cursor:pointer;color:var(--accent);font-weight:700;font-size:15px;}
+  .cand-add:active{background:rgba(255,255,255,.06);}
+  .cand-add svg{width:18px;height:18px;flex:none;}
+  .cand-empty{color:var(--cream-dim);font-size:13px;padding:12px 8px;text-align:center;}
+
   /* Tab bar */
-  .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:1500;display:flex;background:#081430;
-    border-top:1px solid #22386b;padding-bottom:env(safe-area-inset-bottom);}
-  .tabbar button{flex:1;appearance:none;border:0;background:transparent;color:var(--cream-dim);font-family:inherit;
-    font-weight:700;font-size:12px;letter-spacing:.4px;padding:10px 0 12px;display:flex;flex-direction:column;
-    align-items:center;gap:4px;cursor:pointer;position:relative;}
+  .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:1500;display:flex;background:#081430;border-top:1px solid #22386b;padding-bottom:env(safe-area-inset-bottom);}
+  body.wnba .tabbar{background:#1e1000;border-top-color:#7a3a10;}
+  .tabbar button{flex:1;appearance:none;border:0;background:transparent;color:var(--cream-dim);font-family:inherit;font-weight:700;font-size:12px;letter-spacing:.4px;padding:10px 0 12px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;position:relative;}
   .tabbar button svg{width:22px;height:22px;}
   .tabbar button.active{color:var(--cream);}
-  .tabbar button.active::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
-    width:46px;height:3px;border-radius:0 0 3px 3px;background:var(--green);}
+  .tabbar button.active::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:46px;height:3px;border-radius:0 0 3px 3px;background:var(--accent);}
   .tabbar button:focus-visible{outline:3px solid var(--focus);outline-offset:-3px;}
-
-  /* Toast */
-  #toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:#11223f;color:var(--cream);
-    border:1px solid #2c477f;padding:12px 18px;border-radius:12px;font-size:14px;font-weight:600;
-    box-shadow:0 10px 30px rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:.22s;z-index:2000;max-width:88vw;text-align:center;}
-  #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
   @media (prefers-reduced-motion:reduce){*{transition:none !important;}}
 </style>
@@ -139,24 +178,31 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>NBA Rank and Predict</h1>
+    <h1 id="wordmark">Rank and Predict</h1>
     <div class="sub">Predict the standings and bracket</div>
   </header>
 
+  <div class="league-toggle" id="league-toggle" role="tablist" aria-label="League"></div>
+
   <!-- STANDINGS PAGE -->
   <section id="page-standings" class="page active">
-    <div class="toggle" role="tablist" aria-label="Conference">
-      <button id="tab-west" role="tab" aria-pressed="true">WEST</button>
-      <button id="tab-east" role="tab" aria-pressed="false">EAST</button>
-    </div>
-    <div class="hint">Drag the grip <strong>⋮⋮</strong> to reorder, or tap the arrows. Lines mark the play-in (seeds 7–10) and lottery (11–15).</div>
+    <div class="toggle" id="stand-toggle" role="tablist" aria-label="Conference"></div>
+    <div class="hint" id="stand-hint"></div>
     <div class="list" id="list" aria-label="Seed order list"></div>
   </section>
 
   <!-- BRACKET PAGE -->
   <section id="page-bracket" class="page">
-    <div class="hint">Seeded from your standings (top 8). Tap a team to advance them through each round to a champion. Note: the play-in isn't modeled yet — seeds 7 and 8 come straight from your ranking.</div>
+    <div class="hint" id="bracket-hint"></div>
     <div id="bracket-body"></div>
+  </section>
+
+  <!-- ALL-STARS PAGE -->
+  <section id="page-allstars" class="page">
+    <div class="toggle" id="as-toggle" role="tablist" aria-label="Conference"></div>
+    <div class="hint" id="as-hint"></div>
+    <div class="as-toolbar"><span class="as-count" id="as-count"></span><span class="as-source" id="as-source">Built-in list</span></div>
+    <div id="allstars-body"></div>
   </section>
 </div>
 
@@ -169,99 +215,363 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h5v6h4v2h-4v6H3"/><path d="M21 12h-9"/><path d="M16 8l5 4-5 4"/></svg>
     Bracket
   </button>
+  <button id="nav-allstars" role="tab" aria-selected="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 8.5 22 9.3 17 14 18.3 21 12 17.6 5.7 21 7 14 2 9.3 9 8.5 12 2"/></svg>
+    All-Stars
+  </button>
 </nav>
 
-<div id="toast" hidden></div>
+<div class="sheet-backdrop" id="sheet-backdrop"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Pick a player">
+  <div class="sheet-head">
+    <div class="sheet-title" id="sheet-title">Pick a player</div>
+    <button class="sheet-close" id="sheet-close" aria-label="Close">×</button>
+  </div>
+  <div class="sheet-search"><input id="sheet-search" type="text" placeholder="Search or add a player" autocomplete="off" autocapitalize="words"></div>
+  <div class="sheet-list" id="sheet-list"></div>
+</div>
 
 <script>
 (() => {
   "use strict";
 
-  const DATA = {
-    west: [
-      ["OKC","Oklahoma City Thunder","#007ac1","okc"],
-      ["HOU","Houston Rockets","#ce1141","hou"],
-      ["DEN","Denver Nuggets","#0e2240","den"],
-      ["LAL","Los Angeles Lakers","#552583","lal"],
-      ["GSW","Golden State Warriors","#1d428a","gs"],
-      ["SAS","San Antonio Spurs","#20242a","sa"],
-      ["LAC","LA Clippers","#c8102e","lac"],
-      ["DAL","Dallas Mavericks","#00538c","dal"],
-      ["MIN","Minnesota Timberwolves","#236192","min"],
-      ["POR","Portland Trail Blazers","#e03a3e","por"],
-      ["MEM","Memphis Grizzlies","#5d76a9","mem"],
-      ["NOP","New Orleans Pelicans","#0c2340","no"],
-      ["SAC","Sacramento Kings","#5a2d81","sac"],
-      ["PHX","Phoenix Suns","#e56020","phx"],
+  const NBA_TEAMS = {
+    west:[
+      ["OKC","Oklahoma City Thunder","#007ac1","okc"],["HOU","Houston Rockets","#ce1141","hou"],
+      ["DEN","Denver Nuggets","#0e2240","den"],["LAL","Los Angeles Lakers","#552583","lal"],
+      ["GSW","Golden State Warriors","#1d428a","gs"],["SAS","San Antonio Spurs","#20242a","sa"],
+      ["LAC","LA Clippers","#c8102e","lac"],["DAL","Dallas Mavericks","#00538c","dal"],
+      ["MIN","Minnesota Timberwolves","#236192","min"],["POR","Portland Trail Blazers","#e03a3e","por"],
+      ["MEM","Memphis Grizzlies","#5d76a9","mem"],["NOP","New Orleans Pelicans","#0c2340","no"],
+      ["SAC","Sacramento Kings","#5a2d81","sac"],["PHX","Phoenix Suns","#e56020","phx"],
       ["UTA","Utah Jazz","#002b5c","utah"],
     ],
-    east: [
-      ["CLE","Cleveland Cavaliers","#860038","cle"],
-      ["NYK","New York Knicks","#006bb6","ny"],
-      ["BOS","Boston Celtics","#007a33","bos"],
-      ["ORL","Orlando Magic","#0077c0","orl"],
-      ["ATL","Atlanta Hawks","#c8102e","atl"],
-      ["DET","Detroit Pistons","#1d42ba","det"],
-      ["MIL","Milwaukee Bucks","#00471b","mil"],
-      ["PHI","Philadelphia 76ers","#006bb6","phi"],
-      ["IND","Indiana Pacers","#002d62","ind"],
-      ["MIA","Miami Heat","#98002e","mia"],
-      ["CHI","Chicago Bulls","#ce1141","chi"],
-      ["TOR","Toronto Raptors","#ce1141","tor"],
-      ["BKN","Brooklyn Nets","#20242a","bkn"],
-      ["CHA","Charlotte Hornets","#00788c","cha"],
+    east:[
+      ["CLE","Cleveland Cavaliers","#860038","cle"],["NYK","New York Knicks","#006bb6","ny"],
+      ["BOS","Boston Celtics","#007a33","bos"],["ORL","Orlando Magic","#0077c0","orl"],
+      ["ATL","Atlanta Hawks","#c8102e","atl"],["DET","Detroit Pistons","#1d42ba","det"],
+      ["MIL","Milwaukee Bucks","#00471b","mil"],["PHI","Philadelphia 76ers","#006bb6","phi"],
+      ["IND","Indiana Pacers","#002d62","ind"],["MIA","Miami Heat","#98002e","mia"],
+      ["CHI","Chicago Bulls","#ce1141","chi"],["TOR","Toronto Raptors","#ce1141","tor"],
+      ["BKN","Brooklyn Nets","#20242a","bkn"],["CHA","Charlotte Hornets","#00788c","cha"],
       ["WAS","Washington Wizards","#002b5c","wsh"],
     ],
   };
+  const WNBA_TEAMS = {
+    all:[
+      ["LV","Las Vegas Aces","#1a1a1a","lv"],["NY","New York Liberty","#00a693","ny"],
+      ["MIN","Minnesota Lynx","#236192","min"],["ATL","Atlanta Dream","#e03a3e","atl"],
+      ["IND","Indiana Fever","#002d62","ind"],["PHX","Phoenix Mercury","#201747","phx"],
+      ["SEA","Seattle Storm","#2c5234","sea"],["LA","Los Angeles Sparks","#552583","la"],
+      ["DAL","Dallas Wings","#0067b1","dal"],["CHI","Chicago Sky","#418fde","chi"],
+      ["GSV","Golden State Valkyries","#6f2da8","gs"],["WAS","Washington Mystics","#c8102e","wsh"],
+      ["CONN","Connecticut Sun","#dc4405","conn"],["TOR","Toronto Tempo","#008c95","tor"],
+      ["POR","Portland Fire","#d50032","por"],
+    ],
+  };
 
-  const TEAMS = {};
-  for (const conf of ["west","east"]) {
-    DATA[conf].forEach(([abbr,name,color,espn]) => TEAMS[abbr] = {abbr,name,color,espn,conf});
+  const NBA_AS_SLOTS = [
+    {id:"sG1",g:"Starters",l:"Guard",p:"G"},{id:"sG2",g:"Starters",l:"Guard",p:"G"},
+    {id:"sF1",g:"Starters",l:"Frontcourt",p:"F"},{id:"sF2",g:"Starters",l:"Frontcourt",p:"F"},{id:"sF3",g:"Starters",l:"Frontcourt",p:"F"},
+    {id:"rG1",g:"Reserves",l:"Guard",p:"G"},{id:"rG2",g:"Reserves",l:"Guard",p:"G"},
+    {id:"rF1",g:"Reserves",l:"Frontcourt",p:"F"},{id:"rF2",g:"Reserves",l:"Frontcourt",p:"F"},{id:"rF3",g:"Reserves",l:"Frontcourt",p:"F"},
+    {id:"w1",g:"Reserves",l:"Wildcard",p:"ANY"},{id:"w2",g:"Reserves",l:"Wildcard",p:"ANY"},
+  ];
+  const WNBA_AS_SLOTS = [
+    ...Array.from({length:10},(_,i)=>({id:`s${i+1}`,g:"Starters",l:"Starter",p:"ANY"})),
+    ...Array.from({length:12},(_,i)=>({id:`r${i+1}`,g:"Reserves",l:"Reserve",p:"ANY"})),
+  ];
+
+  const NBA_PLAYERS = {
+    west:[
+      // Guards
+      {n:"Shai Gilgeous-Alexander",t:"OKC",p:"G"},{n:"Jalen Williams",t:"OKC",p:"G"},
+      {n:"Stephen Curry",t:"GSW",p:"G"},{n:"Klay Thompson",t:"GSW",p:"G"},
+      {n:"Luka Doncic",t:"LAL",p:"G"},{n:"Austin Reaves",t:"LAL",p:"G"},
+      {n:"Anthony Edwards",t:"MIN",p:"G"},{n:"Mike Conley",t:"MIN",p:"G"},
+      {n:"Devin Booker",t:"PHX",p:"G"},{n:"Bradley Beal",t:"PHX",p:"G"},
+      {n:"Ja Morant",t:"MEM",p:"G"},{n:"Marcus Smart",t:"MEM",p:"G"},
+      {n:"De'Aaron Fox",t:"SAS",p:"G"},{n:"Tre Jones",t:"SAS",p:"G"},
+      {n:"James Harden",t:"LAC",p:"G"},{n:"Norman Powell",t:"LAC",p:"G"},
+      {n:"Jamal Murray",t:"DEN",p:"G"},{n:"Kentavious Caldwell-Pope",t:"DEN",p:"G"},
+      {n:"Fred VanVleet",t:"HOU",p:"G"},{n:"Jalen Green",t:"HOU",p:"G"},
+      {n:"Anfernee Simons",t:"POR",p:"G"},{n:"Scoot Henderson",t:"POR",p:"G"},
+      {n:"Darius Garland",t:"CLE",p:"G"},{n:"Collin Sexton",t:"UTA",p:"G"},
+      {n:"De'Aaron Fox",t:"SAC",p:"G"},{n:"Kevin Huerter",t:"SAC",p:"G"},
+      {n:"CJ McCollum",t:"NOP",p:"G"},{n:"Dejounte Murray",t:"NOP",p:"G"},
+      // Frontcourt
+      {n:"Nikola Jokic",t:"DEN",p:"F"},{n:"Michael Porter Jr.",t:"DEN",p:"F"},
+      {n:"Kevin Durant",t:"HOU",p:"F"},{n:"Alperen Sengun",t:"HOU",p:"F"},
+      {n:"LeBron James",t:"LAL",p:"F"},{n:"Anthony Davis",t:"LAL",p:"F"},
+      {n:"Victor Wembanyama",t:"SAS",p:"F"},{n:"Zach Collins",t:"SAS",p:"F"},
+      {n:"Kawhi Leonard",t:"LAC",p:"F"},{n:"Ivica Zubac",t:"LAC",p:"F"},
+      {n:"Anthony Edwards",t:"MIN",p:"F"},{n:"Karl-Anthony Towns",t:"MIN",p:"F"},
+      {n:"Rudy Gobert",t:"MIN",p:"F"},{n:"Julius Randle",t:"MIN",p:"F"},
+      {n:"Chet Holmgren",t:"OKC",p:"F"},{n:"Isaiah Hartenstein",t:"OKC",p:"F"},
+      {n:"Lauri Markkanen",t:"UTA",p:"F"},{n:"John Collins",t:"UTA",p:"F"},
+      {n:"Domantas Sabonis",t:"SAC",p:"F"},{n:"DeMar DeRozan",t:"SAC",p:"F"},
+      {n:"Zion Williamson",t:"NOP",p:"F"},{n:"Brandon Ingram",t:"NOP",p:"F"},
+      {n:"Jaren Jackson Jr.",t:"MEM",p:"F"},{n:"Desmond Bane",t:"MEM",p:"F"},
+      {n:"Deandre Ayton",t:"POR",p:"F"},{n:"Jerami Grant",t:"POR",p:"F"},
+      {n:"Jimmy Butler",t:"GSW",p:"F"},{n:"Draymond Green",t:"GSW",p:"F"},
+      {n:"Anthony Davis",t:"DAL",p:"F"},{n:"Kyrie Irving",t:"DAL",p:"G"},
+      {n:"Evan Mobley",t:"PHX",p:"F"},
+    ],
+    east:[
+      // Guards
+      {n:"Donovan Mitchell",t:"CLE",p:"G"},{n:"Darius Garland",t:"CLE",p:"G"},
+      {n:"Jalen Brunson",t:"NYK",p:"G"},{n:"Josh Hart",t:"NYK",p:"G"},
+      {n:"Jaylen Brown",t:"BOS",p:"G"},{n:"Derrick White",t:"BOS",p:"G"},
+      {n:"Tyrese Maxey",t:"PHI",p:"G"},{n:"Kyle Lowry",t:"PHI",p:"G"},
+      {n:"Cade Cunningham",t:"DET",p:"G"},{n:"Jaden Ivey",t:"DET",p:"G"},
+      {n:"Trae Young",t:"ATL",p:"G"},{n:"Dejounte Murray",t:"ATL",p:"G"},
+      {n:"LaMelo Ball",t:"CHA",p:"G"},{n:"Terry Rozier",t:"CHA",p:"G"},
+      {n:"Tyrese Haliburton",t:"IND",p:"G"},{n:"Andrew Nembhard",t:"IND",p:"G"},
+      {n:"Tyler Herro",t:"MIA",p:"G"},{n:"Terry Rozier",t:"MIA",p:"G"},
+      {n:"Zach LaVine",t:"CHI",p:"G"},{n:"Coby White",t:"CHI",p:"G"},
+      {n:"Immanuel Quickley",t:"TOR",p:"G"},{n:"Scottie Barnes",t:"TOR",p:"G"},
+      {n:"Cam Thomas",t:"BKN",p:"G"},{n:"Ben Simmons",t:"BKN",p:"G"},
+      {n:"Cole Anthony",t:"ORL",p:"G"},{n:"Jalen Suggs",t:"ORL",p:"G"},
+      {n:"Jordan Poole",t:"WAS",p:"G"},{n:"Bilal Coulibaly",t:"WAS",p:"G"},
+      {n:"Damian Lillard",t:"MIL",p:"G"},
+      // Frontcourt
+      {n:"Giannis Antetokounmpo",t:"MIL",p:"F"},{n:"Brook Lopez",t:"MIL",p:"F"},
+      {n:"Jayson Tatum",t:"BOS",p:"F"},{n:"Al Horford",t:"BOS",p:"F"},
+      {n:"Joel Embiid",t:"PHI",p:"F"},{n:"Paul George",t:"PHI",p:"F"},
+      {n:"Karl-Anthony Towns",t:"NYK",p:"F"},{n:"OG Anunoby",t:"NYK",p:"F"},
+      {n:"Evan Mobley",t:"CLE",p:"F"},{n:"Jarrett Allen",t:"CLE",p:"F"},
+      {n:"Paolo Banchero",t:"ORL",p:"F"},{n:"Franz Wagner",t:"ORL",p:"F"},
+      {n:"Bam Adebayo",t:"MIA",p:"F"},{n:"Jimmy Butler",t:"MIA",p:"F"},
+      {n:"Pascal Siakam",t:"IND",p:"F"},{n:"Myles Turner",t:"IND",p:"F"},
+      {n:"Scottie Barnes",t:"TOR",p:"F"},{n:"Jakob Poeltl",t:"TOR",p:"F"},
+      {n:"Jalen Johnson",t:"ATL",p:"F"},{n:"Clint Capela",t:"ATL",p:"F"},
+      {n:"Miles Bridges",t:"CHA",p:"F"},{n:"Mark Williams",t:"CHA",p:"F"},
+      {n:"Nikola Vucevic",t:"CHI",p:"F"},{n:"Patrick Williams",t:"CHI",p:"F"},
+      {n:"Nic Claxton",t:"BKN",p:"F"},{n:"Cameron Johnson",t:"BKN",p:"F"},
+      {n:"Kyle Kuzma",t:"WAS",p:"F"},{n:"Marvin Bagley III",t:"WAS",p:"F"},
+      {n:"Cade Cunningham",t:"DET",p:"F"},{n:"Jalen Duren",t:"DET",p:"F"},
+    ],
+  };  const WNBA_PLAYERS = {
+    all:[
+      // Atlanta Dream (9-4)
+      {n:"Isobel Borlase",t:"ATL",p:"G"},{n:"Jordin Canada",t:"ATL",p:"G"},
+      {n:"Allisha Gray",t:"ATL",p:"G"},{n:"Rhyne Howard",t:"ATL",p:"G"},
+      {n:"Indya Nivar",t:"ATL",p:"G"},{n:"Aaliyah Nye",t:"ATL",p:"G"},
+      {n:"Te-Hina Paopao",t:"ATL",p:"G"},
+      {n:"Naz Hillmon",t:"ATL",p:"F"},{n:"Brionna Jones",t:"ATL",p:"F"},
+      {n:"Sika Kone",t:"ATL",p:"F"},{n:"Madina Okot",t:"ATL",p:"F"},
+      {n:"Amy Okonkwo",t:"ATL",p:"F"},{n:"Angel Reese",t:"ATL",p:"F"},
+      // Chicago Sky
+      {n:"Rachel Banham",t:"CHI",p:"G"},{n:"DiJonai Carrington",t:"CHI",p:"G"},
+      {n:"Aicha Coulibaly",t:"CHI",p:"G"},{n:"Skylar Diggins",t:"CHI",p:"G"},
+      {n:"Gabriela Jaquez",t:"CHI",p:"G"},{n:"Tonie Morgan",t:"CHI",p:"G"},
+      {n:"Jacy Sheldon",t:"CHI",p:"G"},{n:"Sydney Taylor",t:"CHI",p:"G"},
+      {n:"Sevgi Uzun",t:"CHI",p:"G"},{n:"Hailey Van Lith",t:"CHI",p:"G"},
+      {n:"Courtney Vandersloot",t:"CHI",p:"G"},
+      {n:"Kamilla Cardoso",t:"CHI",p:"F"},{n:"Rickea Jackson",t:"CHI",p:"F"},
+      {n:"Latasha Lattimore",t:"CHI",p:"F"},{n:"Azura Stevens",t:"CHI",p:"F"},
+      {n:"Maddy Westbeld",t:"CHI",p:"F"},
+      // Connecticut Sun (4-15)
+      {n:"Kennedy Burke",t:"CONN",p:"G"},{n:"Ashlon Jackson",t:"CONN",p:"G"},
+      {n:"Kayla Thornton",t:"CONN",p:"G"},
+      {n:"Nell Angloma",t:"CONN",p:"F"},{n:"Raegan Beers",t:"CONN",p:"F"},
+      {n:"Aaliyah Edwards",t:"CONN",p:"F"},{n:"Brittney Griner",t:"CONN",p:"F"},
+      {n:"Olivia Nelson-Ododa",t:"CONN",p:"F"},{n:"Alyssa Thomas",t:"CONN",p:"F"},
+      // Dallas Wings
+      {n:"Grace Berger",t:"DAL",p:"G"},{n:"Paige Bueckers",t:"DAL",p:"G"},
+      {n:"Tyasha Harris",t:"DAL",p:"G"},{n:"Aziaha James",t:"DAL",p:"G"},
+      {n:"Odyssey Sims",t:"DAL",p:"G"},{n:"Stephanie Fudd",t:"DAL",p:"G"},
+      {n:"Dulcy Fankam Mendjiadeu",t:"DAL",p:"F"},{n:"Myisha Hines-Allen",t:"DAL",p:"F"},
+      {n:"Teaira McCowan",t:"DAL",p:"F"},{n:"Natasha Howard",t:"DAL",p:"F"},
+      {n:"Satou Sabally",t:"DAL",p:"F"},
+      // Golden State Valkyries (9-5)
+      {n:"Veronica Burton",t:"GSV",p:"G"},{n:"Chennedy Carter",t:"GSV",p:"G"},
+      {n:"Kayla McBride",t:"GSV",p:"G"},{n:"Gabby Williams",t:"GSV",p:"G"},
+      {n:"Laeticia Amihere",t:"GSV",p:"F"},{n:"Kaila Charles",t:"GSV",p:"F"},
+      {n:"Temi Fagbenle",t:"GSV",p:"F"},{n:"Janiah Barker",t:"GSV",p:"F"},
+      {n:"Carla Leite",t:"GSV",p:"G"},{n:"Flau'jae Johnson",t:"GSV",p:"G"},
+      // Indiana Fever (8-5)
+      {n:"Caitlin Clark",t:"IND",p:"G"},{n:"Kelsey Mitchell",t:"IND",p:"G"},
+      {n:"Lexie Hull",t:"IND",p:"G"},{n:"Raven Johnson",t:"IND",p:"G"},
+      {n:"Shatori Walker-Kimbrough",t:"IND",p:"G"},
+      {n:"Aliyah Boston",t:"IND",p:"F"},{n:"Monique Billings",t:"IND",p:"F"},
+      {n:"Sophie Cunningham",t:"IND",p:"F"},
+      // Las Vegas Aces (13-5)
+      {n:"Chennedy Carter",t:"LV",p:"G"},{n:"Jackie Young",t:"LV",p:"G"},
+      {n:"Chelsea Gray",t:"LV",p:"G"},{n:"Kierstan Bell",t:"LV",p:"F"},
+      {n:"A'ja Wilson",t:"LV",p:"F"},{n:"Breanna Stewart",t:"LV",p:"F"},
+      {n:"Janiah Barker",t:"LV",p:"F"},{n:"Alysha Clark",t:"LV",p:"G"},
+      {n:"Kiah Stokes",t:"LV",p:"F"},{n:"Jordin Canada",t:"LV",p:"G"},
+      // Los Angeles Sparks (7-7)
+      {n:"Ariel Atkins",t:"LA",p:"G"},{n:"Ta'Niya Latson",t:"LA",p:"G"},
+      {n:"Kelsey Plum",t:"LA",p:"G"},{n:"Chance Gray",t:"LA",p:"G"},
+      {n:"Dearica Hamby",t:"LA",p:"F"},{n:"Cameron Brink",t:"LA",p:"F"},
+      {n:"Nneka Ogwumike",t:"LA",p:"F"},{n:"Azura Stevens",t:"LA",p:"F"},
+      // Minnesota Lynx (15-4)
+      {n:"Courtney Williams",t:"MIN",p:"G"},{n:"Kayla McBride",t:"MIN",p:"G"},
+      {n:"Diamond Miller",t:"MIN",p:"G"},{n:"Rachel Banham",t:"MIN",p:"G"},
+      {n:"Napheesa Collier",t:"MIN",p:"F"},{n:"Nia Coffey",t:"MIN",p:"F"},
+      {n:"Dorka Juhasz",t:"MIN",p:"F"},{n:"Alanna Smith",t:"MIN",p:"F"},
+      {n:"Natalie Achonwa",t:"MIN",p:"F"},{n:"Aubrey Griffin",t:"MIN",p:"F"},
+      // New York Liberty (12-7)
+      {n:"Sabrina Ionescu",t:"NY",p:"G"},{n:"Natasha Cloud",t:"NY",p:"G"},
+      {n:"Rebekah Gardner",t:"NY",p:"G"},{n:"Leonie Fiebich",t:"NY",p:"F"},
+      {n:"Breanna Stewart",t:"NY",p:"F"},{n:"Jonquel Jones",t:"NY",p:"F"},
+      {n:"Kennedy Burke",t:"NY",p:"F"},{n:"Isabelle Harrison",t:"NY",p:"F"},
+      {n:"Han Xu",t:"NY",p:"F"},
+      // Phoenix Mercury (4-11)
+      {n:"Monique Akoa Makani",t:"PHX",p:"G"},{n:"DeWanna Bonner",t:"PHX",p:"F"},
+      {n:"Valeriane Ayayi",t:"PHX",p:"F"},{n:"Kahleah Copper",t:"PHX",p:"G"},
+      {n:"Diana Taurasi",t:"PHX",p:"G"},{n:"Sophie Cunningham",t:"PHX",p:"G"},
+      {n:"Megan Gustafson",t:"PHX",p:"F"},{n:"Rebecca Allen",t:"PHX",p:"F"},
+      // Portland Fire (7-9)
+      {n:"Sarah Ashlee Barker",t:"POR",p:"G"},{n:"Nika Muhl",t:"POR",p:"G"},
+      {n:"Iyana Martin",t:"POR",p:"G"},{n:"Jaylyn Sherrod",t:"POR",p:"G"},
+      {n:"Bridget Carleton",t:"POR",p:"F"},{n:"Frieda Buhner",t:"POR",p:"F"},
+      {n:"Tina Charles",t:"POR",p:"F"},{n:"Ezi Magbegor",t:"POR",p:"F"},
+      // Seattle Storm (3-12)
+      {n:"Zia Cooke",t:"SEA",p:"G"},{n:"Jordan Horston",t:"SEA",p:"G"},
+      {n:"Victoria Vivians",t:"SEA",p:"G"},
+      {n:"Stefanie Dolson",t:"SEA",p:"F"},{n:"Awa Fam",t:"SEA",p:"F"},
+      {n:"Gabby Williams",t:"SEA",p:"G"},{n:"Mercedes Russell",t:"SEA",p:"F"},
+      // Toronto Tempo (7-7)
+      {n:"Julie Allemand",t:"TOR",p:"G"},{n:"Kiki Rice",t:"TOR",p:"G"},
+      {n:"Marina Mabrey",t:"TOR",p:"G"},{n:"Lexie Brown",t:"TOR",p:"G"},
+      {n:"Temi Fagbenle",t:"TOR",p:"F"},{n:"Maria Conde",t:"TOR",p:"F"},
+      {n:"Nyara Sabally",t:"TOR",p:"F"},{n:"Elizabeth Balogun",t:"TOR",p:"F"},
+      // Washington Mystics (6-7)
+      {n:"Georgia Amoore",t:"WAS",p:"G"},{n:"Natasha Cloud",t:"WAS",p:"G"},
+      {n:"Brittney Sykes",t:"WAS",p:"G"},{n:"Sug Sutton",t:"WAS",p:"G"},
+      {n:"Shakira Austin",t:"WAS",p:"F"},{n:"Lauren Betts",t:"WAS",p:"F"},
+      {n:"Stefanie Dolson",t:"WAS",p:"F"},{n:"Aaliyah Edwards",t:"WAS",p:"F"},
+    ],
+  };  const SECTION_TITLE = {west:"Western Conference", east:"Eastern Conference", all:"Playoff Bracket"};
+  // Hardcoded ESPN team IDs — stable, never change. Avoids /teams endpoint which blocks file:// origins.
+  const ESPN_IDS = {
+    nba:[["ATL",1],["BOS",2],["NOP",3],["CHI",4],["CLE",5],["DAL",6],["DEN",7],["DET",8],["GSW",9],["HOU",10],["IND",11],["LAC",12],["LAL",13],["MEM",14],["MIA",15],["MIN",16],["BKN",17],["NYK",18],["ORL",19],["PHI",20],["PHX",21],["POR",22],["SAC",23],["SAS",24],["OKC",25],["UTA",26],["WAS",27],["TOR",28],["MIL",29],["CHA",30]],
+    wnba:[["ATL",20],["CHI",19],["CONN",18],["DAL",3],["GSV",129689],["IND",5],["LV",17],["LA",6],["MIN",8],["NY",9],["PHX",11],["POR",132052],["SEA",14],["TOR",131935],["WAS",16]],
+  };
+  async function fetchLiveRosters(lg){
+    const base=`https://site.api.espn.com/apis/site/v2/sports/basketball/${CONFIG[lg].espn}`;
+    const posToGF=ab=>/^(G|PG|SG)/i.test(ab||'')?'G':'F';
+    const keys=CONFIG[lg].confs.map(c=>c.key);
+    const single=keys.length===1?keys[0]:null;
+    const next={}; keys.forEach(k=>next[k]=[]);
+    try{
+      const results=await Promise.allSettled(
+        ESPN_IDS[lg].map(([abbr,id])=>
+          fetch(`${base}/teams/${id}/roster`).then(r=>r.json()).then(j=>({abbr,j}))
+        )
+      );
+      results.forEach(r=>{
+        if(r.status!=='fulfilled'||!r.value?.j) return;
+        const{abbr,j}=r.value;
+        const cf=single||(TEAMS[lg][abbr]?.conf); if(!cf) return;
+        let aths=j.athletes||[];
+        if(aths.length&&aths[0]?.items) aths=aths.flatMap(g=>g.items||[]);
+        aths.forEach(a=>{
+          const name=a.fullName||a.displayName; if(!name) return;
+          const pa=a.position?.abbreviation||a.position?.name||'';
+          next[cf].push({n:name,t:abbr,p:posToGF(pa)});
+        });
+      });
+      if(keys.every(k=>next[k].length>5)){
+        keys.forEach(k=>next[k].sort((a,b)=>a.n.localeCompare(b.n)));
+        CONFIG[lg].players=next;
+        const src=document.getElementById('as-source');
+        if(src) src.textContent='✓ Live rosters · '+new Date().toLocaleDateString();
+        if(page==='allstars'&&lg===league){ renderAllstars(); if(pickerCtx) fillCandidates(sheetSearch.value||''); }
+        return true;
+      }
+    }catch(e){}
+    return false;
   }
-  const DEFAULTS = { west: DATA.west.map(t=>t[0]), east: DATA.east.map(t=>t[0]) };
 
-  // ---- state ----
-  let current = "west";
-  let order = { west:[...DEFAULTS.west], east:[...DEFAULTS.east] };
-  let picks = {};          // matchId -> winner abbr (+ "FINALS")
-  let drag = null;
+  const CONFIG = {
+    nba:{
+      label:"NBA", espn:"nba",
+      confs:[{key:"west",label:"WEST"},{key:"east",label:"EAST"}],
+      teams:NBA_TEAMS, players:NBA_PLAYERS, asSlots:NBA_AS_SLOTS,
+      cutlines:[{after:6,style:"dotted",label:"PLAY-IN"},{after:10,style:"solid",label:"LOTTERY"}],
+      finals:true, finalsLabel:"NBA Finals", champLabel:"NBA CHAMPION",
+      standHint:"Drag the grip ⋮⋮ to reorder, or tap the arrows. Lines mark the play-in (seeds 7–10) and lottery (11–15).",
+    },
+    wnba:{
+      label:"WNBA", espn:"wnba",
+      confs:[{key:"all",label:"LEAGUE"}],
+      teams:WNBA_TEAMS, players:WNBA_PLAYERS, asSlots:WNBA_AS_SLOTS,
+      cutlines:[{after:8,style:"solid",label:"PLAYOFFS"}],
+      finals:false, champLabel:"WNBA CHAMPION",
+      standHint:"Drag the grip ⋮⋮ to reorder, or tap the arrows. The WNBA uses one league-wide table — the top 8 make the playoffs.",
+    },
+  };
 
-  const list = document.getElementById("list");
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const TEAMS={nba:{},wnba:{}}, DEFAULTS={nba:{},wnba:{}};
+  for(const lg of ["nba","wnba"]) for(const cf of CONFIG[lg].confs){
+    const arr=CONFIG[lg].teams[cf.key];
+    DEFAULTS[lg][cf.key]=arr.map(t=>t[0]);
+    arr.forEach(([abbr,name,color,espn])=> TEAMS[lg][abbr]={abbr,name,color,espn,conf:cf.key});
+  }
+  let league="nba", page="standings";
+  let current="west", asConf="west";
+  let order=JSON.parse(JSON.stringify(DEFAULTS));
+  let picks={};
+  const allstars={nba:{},wnba:{}};
+  for(const lg of ["nba","wnba"]) for(const cf of CONFIG[lg].confs) allstars[lg][cf.key]={};
+  let drag=null, pickerCtx=null, curCandidates=[];
 
-  const el = (tag,cls,txt) => { const e=document.createElement(tag); if(cls)e.className=cls; if(txt!=null)e.textContent=txt; return e; };
-  const nick = name => name.trim().split(" ").slice(-1)[0];
-  const logoURL = t => `https://a.espncdn.com/i/teamlogos/nba/500/${t.espn}.png`;
+  const list=document.getElementById("list");
+  const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const el=(tag,cls,txt)=>{const e=document.createElement(tag); if(cls)e.className=cls; if(txt!=null)e.textContent=txt; return e;};
+  const nick=name=>name.trim().split(" ").slice(-1)[0];
+  const team=abbr=>TEAMS[league][abbr];
+  const logoURL=t=>`https://a.espncdn.com/i/teamlogos/${CONFIG[league].espn}/500/${t.espn}.png`;
+  const labelOf=k=> k==="west"?"West" : k==="east"?"East" : CONFIG[league].label;
 
-  function buildLogo(t, cls){
-    const wrap = el("span", cls);
-    const img = el("img"); img.src = logoURL(t); img.alt = "";
-    const chip = el("span","bk-chip"); chip.style.background=t.color; chip.textContent=t.abbr;
-    img.addEventListener("error", () => { img.style.display="none"; chip.style.display="flex"; });
-    wrap.appendChild(img); wrap.appendChild(chip);
-    return wrap;
+  function buildLogo(t,cls){
+    const wrap=el("span",cls);
+    const img=el("img"); img.src=logoURL(t); img.alt="";
+    const chip=el("span","bk-chip"); chip.style.background=t.color; chip.textContent=t.abbr;
+    img.addEventListener("error",()=>{img.style.display="none";chip.style.display="flex";});
+    wrap.appendChild(img); wrap.appendChild(chip); return wrap;
   }
 
-  // ---- persistence (artifact storage when present, else memory) ----
-  const store = (window.storage && typeof window.storage.set === "function") ? window.storage : null;
-  async function save(){ if(!store) return; try{ await store.set("nbarp", JSON.stringify({order,picks}), false); }catch(e){} }
+  const store=(window.storage && typeof window.storage.set==="function") ? window.storage : null;
+  async function save(){ if(!store) return; try{ await store.set("rnp", JSON.stringify({league,order,picks,allstars}), false); }catch(e){} }
   async function load(){
     if(!store) return;
     try{
-      const r = await store.get("nbarp", false);
-      if(r && r.value){
-        const o = JSON.parse(r.value);
-        if(o.order) for(const c of ["west","east"]){ if(Array.isArray(o.order[c]) && o.order[c].length===DEFAULTS[c].length) order[c]=o.order[c]; }
-        if(o.picks && typeof o.picks==="object") picks = o.picks;
+      const r=await store.get("rnp",false);
+      if(r&&r.value){
+        const o=JSON.parse(r.value);
+        if(o.league && CONFIG[o.league]) league=o.league;
+        if(o.order) for(const lg of ["nba","wnba"]) for(const cf of CONFIG[lg].confs){
+          const a=o.order[lg]&&o.order[lg][cf.key];
+          if(Array.isArray(a) && a.length===DEFAULTS[lg][cf.key].length) order[lg][cf.key]=a;
+        }
+        if(o.picks && typeof o.picks==="object") picks=o.picks;
+        if(o.allstars) for(const lg of ["nba","wnba"]) for(const cf of CONFIG[lg].confs){
+          if(o.allstars[lg]&&typeof o.allstars[lg][cf.key]==="object") allstars[lg][cf.key]=o.allstars[lg][cf.key];
+        }
       }
     }catch(e){}
   }
 
-  // ============== STANDINGS ==============
+  function buildToggle(id, confs, activeKey, onPick){
+    const c=document.getElementById(id); c.innerHTML="";
+    c.style.display = confs.length>1 ? "flex" : "none";
+    confs.forEach(cf=>{
+      const b=el("button",null,cf.label);
+      b.setAttribute("aria-pressed", cf.key===activeKey);
+      b.addEventListener("click",()=>onPick(cf.key));
+      c.appendChild(b);
+    });
+  }
+
   function makeRow(abbr){
-    const t = TEAMS[abbr];
-    const row = el("div","row slot"); row.dataset.abbr = abbr;
-    row.innerHTML = `
+    const t=team(abbr);
+    const row=el("div","row slot"); row.dataset.abbr=abbr;
+    row.innerHTML=`
       <div class="seed"></div>
       <div class="card">
         <span class="badge"><img class="logo" alt="${t.name} logo" src="${logoURL(t)}"><span class="chip" style="background:${t.color}">${t.abbr}</span></span>
@@ -272,62 +582,67 @@
         </span>
         <span class="grip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
       </div>`;
-    const img = row.querySelector(".logo"), chip = row.querySelector(".chip");
-    img.addEventListener("error", () => { img.style.display="none"; chip.style.display="flex"; });
+    const img=row.querySelector(".logo"), chip=row.querySelector(".chip");
+    img.addEventListener("error",()=>{img.style.display="none";chip.style.display="flex";});
     return row;
+  }
+  // Ensure current conf key is valid for the active league
+  function clampConfs(){
+    const keys=CONFIG[league].confs.map(c=>c.key);
+    if(!keys.includes(current)) current=keys[0];
+    if(!keys.includes(asConf)) asConf=keys[0];
   }
 
   function render(){
-    list.innerHTML = "";
-    order[current].forEach(abbr => list.appendChild(makeRow(abbr)));
+    clampConfs();
+    document.getElementById("stand-hint").textContent=CONFIG[league].standHint;
+    buildToggle("stand-toggle", CONFIG[league].confs, current, setConf);
+    list.innerHTML="";
+    order[league][current].forEach(abbr=>list.appendChild(makeRow(abbr)));
     paint();
   }
-
   function paint(){
-    const slots = [...list.querySelectorAll(".slot")];
-    let n = 0;
-    slots.forEach(s => {
+    const slots=[...list.querySelectorAll(".slot")];
+    const cuts=CONFIG[league].cutlines;
+    let n=0;
+    slots.forEach(s=>{
       n++;
-      s.classList.remove("after-playin","after-lottery");
-      if(s.classList.contains("placeholder")){ if(drag){ const d=drag.el.querySelector(".seed"); if(d) d.textContent=n; } }
+      s.classList.remove("cut","cut-dotted","cut-solid"); s.removeAttribute("data-line");
+      if(s.classList.contains("placeholder")){ if(drag){const d=drag.el.querySelector(".seed"); if(d)d.textContent=n;} }
       else { const seed=s.querySelector(".seed"); if(seed) seed.textContent=n; }
-      if(n===6) s.classList.add("after-playin");
-      if(n===10) s.classList.add("after-lottery");
+      const cl=cuts.find(c=>c.after===n);
+      if(cl){ s.classList.add("cut", cl.style==="dotted"?"cut-dotted":"cut-solid"); s.dataset.line=cl.label; }
     });
-    const rows = [...list.querySelectorAll(".row.slot")];
+    const rows=[...list.querySelectorAll(".row.slot")];
     rows.forEach((r,i)=>{ r.querySelector(".up").disabled=(i===0); r.querySelector(".down").disabled=(i===rows.length-1); });
   }
-
-  const syncFromDOM = () => { order[current] = [...list.querySelectorAll(".row.slot")].map(r=>r.dataset.abbr); };
+  const syncFromDOM=()=>{ order[league][current]=[...list.querySelectorAll(".row.slot")].map(r=>r.dataset.abbr); };
 
   function flip(mutate){
     if(reduced){ mutate(); return; }
-    const items = [...list.querySelectorAll(".row.slot")];
-    const first = new Map(items.map(e=>[e, e.getBoundingClientRect().top]));
+    const items=[...list.querySelectorAll(".row.slot")];
+    const first=new Map(items.map(e=>[e,e.getBoundingClientRect().top]));
     mutate();
     items.forEach(e=>{
-      const dy = first.get(e) - e.getBoundingClientRect().top;
+      const dy=first.get(e)-e.getBoundingClientRect().top;
       if(dy){ e.style.transition="none"; e.style.transform=`translateY(${dy}px)`;
         requestAnimationFrame(()=>{ e.style.transition="transform .17s ease"; e.style.transform=""; }); }
     });
   }
-
-  list.addEventListener("click", e => {
+  list.addEventListener("click", e=>{
     const up=e.target.closest(".up"), down=e.target.closest(".down");
-    if(!up && !down) return;
+    if(!up&&!down) return;
     const row=e.target.closest(".row.slot"); if(!row) return;
-    const sib = up ? row.previousElementSibling : row.nextElementSibling;
-    if(!sib || !sib.classList.contains("row")) return;
+    const sib=up?row.previousElementSibling:row.nextElementSibling;
+    if(!sib||!sib.classList.contains("row")) return;
     flip(()=>{ if(up) list.insertBefore(row,sib); else list.insertBefore(sib,row); });
     syncFromDOM(); paint(); save();
   });
-
-  list.addEventListener("pointerdown", e => {
+  list.addEventListener("pointerdown", e=>{
     if(!e.target.closest(".grip")) return;
     const row=e.target.closest(".row.slot"); if(!row) return;
     e.preventDefault(); startDrag(e,row);
   });
-
   function startDrag(e,row){
     const rect=row.getBoundingClientRect();
     const ph=el("div","placeholder slot"); list.insertBefore(ph,row);
@@ -340,7 +655,7 @@
   }
   function onMove(e){
     if(!drag) return;
-    drag.el.style.top = (e.clientY-drag.offsetY)+"px";
+    drag.el.style.top=(e.clientY-drag.offsetY)+"px";
     const m=70;
     if(e.clientY<m) window.scrollBy(0,-10); else if(e.clientY>window.innerHeight-m) window.scrollBy(0,10);
     const rows=[...list.querySelectorAll(".row.slot")];
@@ -359,38 +674,28 @@
     list.insertBefore(row,ph); ph.remove(); drag=null;
     syncFromDOM(); paint(); save();
   }
+  function setConf(c){ current=c; render(); save(); }
 
-  // conference toggle
-  const tabs={west:document.getElementById("tab-west"), east:document.getElementById("tab-east")};
-  function setConf(c){ current=c; tabs.west.setAttribute("aria-pressed",c==="west"); tabs.east.setAttribute("aria-pressed",c==="east"); render(); }
-  tabs.west.addEventListener("click",()=>setConf("west"));
-  tabs.east.addEventListener("click",()=>setConf("east"));
-
-  // ============== BRACKET ==============
-  const seedOf = abbr => order[TEAMS[abbr].conf].indexOf(abbr)+1;
-  const winnerOf = (id,parts) => { const p=picks[id]; return (p && parts.includes(p)) ? p : null; };
-
-  function computeConf(conf){
-    const C = conf==="west" ? "W" : "E";
-    const s = order[conf];
-    const r1 = [[s[0],s[7]],[s[3],s[4]],[s[2],s[5]],[s[1],s[6]]];
-    const m = {};
-    r1.forEach((parts,i)=>{ const id=`${C}-r1m${i}`; m[id]={parts,winner:winnerOf(id,parts)}; });
+  const winnerOf=(id,parts)=>{ const p=picks[id]; return (p&&parts.includes(p))?p:null; };
+  function computeConf(cf){
+    const pre=`${league}-${cf}`, s=order[league][cf];
+    const r1=[[s[0],s[7]],[s[3],s[4]],[s[2],s[5]],[s[1],s[6]]];
+    const m={};
+    r1.forEach((parts,i)=>{ const id=`${pre}-r1m${i}`; m[id]={parts,winner:winnerOf(id,parts)}; });
     [["r1m0","r1m1"],["r1m2","r1m3"]].forEach((pair,i)=>{
-      const parts=[m[`${C}-${pair[0]}`].winner, m[`${C}-${pair[1]}`].winner];
-      const id=`${C}-r2m${i}`; m[id]={parts,winner:winnerOf(id,parts.filter(Boolean))};
+      const parts=[m[`${pre}-${pair[0]}`].winner, m[`${pre}-${pair[1]}`].winner];
+      const id=`${pre}-r2m${i}`; m[id]={parts,winner:winnerOf(id,parts.filter(Boolean))};
     });
-    { const parts=[m[`${C}-r2m0`].winner, m[`${C}-r2m1`].winner];
-      const id=`${C}-r3m0`; m[id]={parts,winner:winnerOf(id,parts.filter(Boolean))}; }
-    m.champ = m[`${C}-r3m0`].winner;
+    { const parts=[m[`${pre}-r2m0`].winner,m[`${pre}-r2m1`].winner];
+      const id=`${pre}-r3m0`; m[id]={parts,winner:winnerOf(id,parts.filter(Boolean))}; }
+    m.champ=m[`${pre}-r3m0`].winner;
     return m;
   }
-
-  function teamCard(abbr, matchId, matchWinner, pickable){
-    const card = el("div","bk-team");
+  function teamCard(abbr, matchId, matchWinner, pickable, cf){
+    const card=el("div","bk-team");
     if(!abbr){ card.classList.add("empty"); card.appendChild(el("span","bk-wait","—")); return card; }
-    const t = TEAMS[abbr];
-    card.appendChild(el("span","bk-seed", String(seedOf(abbr))));
+    const t=team(abbr);
+    card.appendChild(el("span","bk-seed", String(order[league][cf].indexOf(abbr)+1)));
     card.appendChild(buildLogo(t,"bk-logo"));
     card.appendChild(el("span","bk-name", nick(t.name)));
     card.dataset.abbr=abbr; card.dataset.match=matchId;
@@ -398,59 +703,59 @@
     if(pickable) card.classList.add("pickable");
     return card;
   }
-
-  function buildConf(conf){
-    const C = conf==="west" ? "W" : "E";
-    const m = computeConf(conf);
-    const bk = el("div","bk");
-    const cols = [
-      [`${C}-r1m0`,`${C}-r1m1`,`${C}-r1m2`,`${C}-r1m3`],
-      [`${C}-r2m0`,`${C}-r2m1`],
-      [`${C}-r3m0`],
-    ];
+  function buildConf(cf){
+    const pre=`${league}-${cf}`, m=computeConf(cf);
+    const bk=el("div","bk");
+    const cols=[[`${pre}-r1m0`,`${pre}-r1m1`,`${pre}-r1m2`,`${pre}-r1m3`],[`${pre}-r2m0`,`${pre}-r2m1`],[`${pre}-r3m0`]];
     cols.forEach(ids=>{
-      const colEl = el("div","bk-col");
+      const colEl=el("div","bk-col");
       ids.forEach(id=>{
         const match=m[id], both=match.parts.every(Boolean);
-        const matchEl=el("div","bk-match"); matchEl.dataset.m=id.split("-")[1];
-        match.parts.forEach(abbr => matchEl.appendChild(teamCard(abbr,id,match.winner,both)));
+        const matchEl=el("div","bk-match"); matchEl.dataset.m=id.replace(pre+"-","");
+        match.parts.forEach(abbr=>matchEl.appendChild(teamCard(abbr,id,match.winner,both,cf)));
         colEl.appendChild(matchEl);
       });
       bk.appendChild(colEl);
     });
     return bk;
   }
-
-  function finalsCard(abbr, champ, pickable, side){
+  function champBanner(abbr, labelTxt, emptyMsg){
+    const b=el("div","champ-banner");
+    b.appendChild(el("div","champ-label", labelTxt));
+    if(abbr){ const t=team(abbr); const ct=el("div","champ-team"); ct.appendChild(buildLogo(t,"champ-logo")); ct.appendChild(el("span",null,t.name)); b.appendChild(ct); }
+    else b.appendChild(el("div","champ-empty", emptyMsg));
+    return b;
+  }
+  function finalsCard(abbr, matchId, champ, pickable, side){
     const card=el("div","bk-team");
     if(!abbr){ card.classList.add("empty"); card.appendChild(el("span","bk-wait", side+" champ")); return card; }
-    const t=TEAMS[abbr];
+    const t=team(abbr);
     card.appendChild(buildLogo(t,"bk-logo"));
     card.appendChild(el("span","bk-name", nick(t.name)));
-    card.dataset.abbr=abbr; card.dataset.match="FINALS";
+    card.dataset.abbr=abbr; card.dataset.match=matchId;
     if(champ===abbr) card.classList.add("won"); else if(champ) card.classList.add("lost");
     if(pickable) card.classList.add("pickable");
     return card;
   }
-
   function buildFinals(){
-    const wc=computeConf("west").champ, ec=computeConf("east").champ;
-    const both = wc && ec;
-    const champ = (picks.FINALS && [wc,ec].includes(picks.FINALS)) ? picks.FINALS : null;
+    const wc=computeConf("west").champ, ec=computeConf("east").champ, both=wc&&ec;
+    const id=`${league}-FINALS`;
+    const champ=(picks[id] && [wc,ec].includes(picks[id]))?picks[id]:null;
     const wrap=el("div","finals");
     const row=el("div","finals-row");
-    row.appendChild(finalsCard(wc,champ,both,"West"));
+    row.appendChild(finalsCard(wc,id,champ,both,"West"));
     row.appendChild(el("span","finals-vs","vs"));
-    row.appendChild(finalsCard(ec,champ,both,"East"));
+    row.appendChild(finalsCard(ec,id,champ,both,"East"));
     wrap.appendChild(row);
-    const banner=el("div","champ-banner");
-    banner.appendChild(el("div","champ-label","NBA CHAMPION"));
-    if(champ){ const t=TEAMS[champ]; const ct=el("div","champ-team"); ct.appendChild(buildLogo(t,"champ-logo")); ct.appendChild(el("span",null,t.name)); banner.appendChild(ct); }
-    else banner.appendChild(el("div","champ-empty", both ? "Tap a finalist to crown your champion" : "Decide both conference finals first"));
-    wrap.appendChild(banner);
+    wrap.appendChild(champBanner(champ, CONFIG[league].champLabel, both?"Tap a finalist to crown your champion":"Decide both conference finals first"));
     return wrap;
   }
-
+  function buildSingleChampion(cf){
+    const champ=computeConf(cf).champ;
+    const wrap=el("div","finals");
+    wrap.appendChild(champBanner(champ, CONFIG[league].champLabel, "Decide the final to crown your champion"));
+    return wrap;
+  }
   function drawConnectors(bk){
     const old=bk.querySelector("svg.bk-lines"); if(old) old.remove();
     const pairs=[["r1m0","r2m0"],["r1m1","r2m0"],["r1m2","r2m1"],["r1m3","r2m1"],["r2m0","r3m0"],["r2m1","r3m0"]];
@@ -471,40 +776,175 @@
     });
     bk.insertBefore(svg, bk.firstChild);
   }
-
   function renderBracket(){
-    const body=document.getElementById("bracket-body");
-    body.innerHTML="";
-    [["west","Western Conference"],["east","Eastern Conference"]].forEach(([conf,title])=>{
-      body.appendChild(el("div","bk-section-title",title));
-      const scroll=el("div","bk-scroll"); scroll.appendChild(buildConf(conf)); body.appendChild(scroll);
+    clampConfs();
+    document.getElementById("bracket-hint").textContent = CONFIG[league].finals
+      ? "Seeded from your standings (top 8 per conference). Tap a team to advance them to a champion."
+      : "Seeded from your standings (top 8). Tap a team to advance them through each round to the title.";
+    const body=document.getElementById("bracket-body"); body.innerHTML="";
+    CONFIG[league].confs.forEach(cf=>{
+      body.appendChild(el("div","bk-section-title", SECTION_TITLE[cf.key]||cf.label));
+      const scroll=el("div","bk-scroll"); scroll.appendChild(buildConf(cf.key)); body.appendChild(scroll);
     });
-    body.appendChild(el("div","bk-section-title","NBA Finals"));
-    body.appendChild(buildFinals());
+    if(CONFIG[league].finals){
+      body.appendChild(el("div","bk-section-title", CONFIG[league].finalsLabel));
+      body.appendChild(buildFinals());
+    } else {
+      body.appendChild(el("div","bk-section-title","Champion"));
+      body.appendChild(buildSingleChampion(CONFIG[league].confs[0].key));
+    }
     requestAnimationFrame(()=> body.querySelectorAll(".bk").forEach(drawConnectors));
   }
-
   document.getElementById("bracket-body").addEventListener("click", e=>{
     const card=e.target.closest(".bk-team.pickable"); if(!card) return;
     picks[card.dataset.match]=card.dataset.abbr; save(); renderBracket();
   });
 
-  // ============== PAGES / TABS ==============
-  const pages={standings:document.getElementById("page-standings"), bracket:document.getElementById("page-bracket")};
-  const navs ={standings:document.getElementById("nav-standings"), bracket:document.getElementById("nav-bracket")};
+  const asInitials=name=>{ const w=name.trim().split(/\s+/); return ((w[0]&&w[0][0]||"")+(w.length>1?w[w.length-1][0]:"")).toUpperCase(); };
+  function asVisual(pl){ return (pl.t && TEAMS[league][pl.t]) ? buildLogo(TEAMS[league][pl.t],"as-logo") : el("span","as-initials", asInitials(pl.n)); }
+
+  function renderAllstars(){
+    clampConfs();
+    document.getElementById("as-hint").textContent = CONFIG[league].finals
+      ? "Tap a slot to choose a player. 5 starters (2 guards, 3 frontcourt) and 7 reserves per conference. Type to add anyone."
+      : "Tap a slot to choose a player. 10 starters and 12 reserves for the league. Type a name to add anyone not listed.";
+    buildToggle("as-toggle", CONFIG[league].confs, asConf, setAsConf);
+    const body=document.getElementById("allstars-body"); body.innerHTML="";
+    const slots=CONFIG[league].asSlots; let g=null;
+    slots.forEach(slot=>{ if(slot.g!==g){ g=slot.g; body.appendChild(el("div","as-group-title", g)); } body.appendChild(asSlotRow(slot)); });
+    const filled=slots.filter(s=>allstars[league][asConf][s.id]).length;
+    document.getElementById("as-count").textContent=`${labelOf(asConf)} · ${filled} of ${slots.length} picked`;
+    const src=document.getElementById("as-source"); if(src) src.textContent="2026 rosters";
+  }
+  function asSlotRow(slot){
+    const pl=allstars[league][asConf][slot.id];
+    const row=el("div","as-slot"+(pl?"":" empty")); row.dataset.slot=slot.id;
+    row.appendChild(el("span","as-pos", slot.l.toUpperCase()));
+    if(pl){
+      row.appendChild(asVisual(pl));
+      row.appendChild(el("span","as-name", pl.n));
+      const clr=el("button","as-clear"); clr.dataset.clear=slot.id; clr.setAttribute("aria-label","Remove");
+      clr.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>';
+      row.appendChild(clr);
+    } else {
+      row.appendChild(el("span","as-empty-label","Tap to choose"));
+      row.appendChild(el("span","as-plus","+"));
+    }
+    return row;
+  }
+  document.getElementById("allstars-body").addEventListener("click", e=>{
+    const clr=e.target.closest("[data-clear]");
+    if(clr){ delete allstars[league][asConf][clr.dataset.clear]; save(); renderAllstars(); return; }
+    const row=e.target.closest(".as-slot"); if(!row) return;
+    openPicker(row.dataset.slot);
+  });
+  function setAsConf(c){ asConf=c; renderAllstars(); save(); }
+
+  const sheet=document.getElementById("sheet"), sheetBackdrop=document.getElementById("sheet-backdrop"),
+        sheetList=document.getElementById("sheet-list"), sheetSearch=document.getElementById("sheet-search");
+  function openPicker(slotId){
+    const slot=CONFIG[league].asSlots.find(s=>s.id===slotId);
+    if(!slot) return;
+    pickerCtx={conf:asConf, slotId, pos:slot.p};
+    const suffix = CONFIG[league].confs.length>1 ? ` · ${labelOf(asConf)}` : "";
+    document.getElementById("sheet-title").textContent=`Pick a ${slot.l}${suffix}`;
+    sheetSearch.value=""; fillCandidates(""); showSheet(true);
+    setTimeout(()=>sheetSearch.focus(),260);
+  }
+  function fillCandidates(q){
+    const {conf,pos,slotId}=pickerCtx;
+    const pool=CONFIG[league].players[conf] || CONFIG[league].players[CONFIG[league].confs[0].key] || [];
+    const assigned=new Set(Object.entries(allstars[league][conf]).filter(([k,v])=>v&&k!==slotId).map(([,v])=>v.n.toLowerCase()));
+    const ql=q.trim().toLowerCase();
+    let poolList=pool.filter(p=>(pos==="ANY"||p.p===pos)&&!assigned.has(p.n.toLowerCase()));
+    if(ql) poolList=poolList.filter(p=>p.n.toLowerCase().includes(ql));
+    curCandidates=poolList; sheetList.innerHTML="";
+    poolList.forEach((p,i)=>{
+      const row=el("div","cand"); row.dataset.idx=i;
+      row.appendChild(asVisual(p));
+      row.appendChild(el("span","cand-name",p.n));
+      if(p.t) row.appendChild(el("span","cand-team",p.t));
+      sheetList.appendChild(row);
+    });
+    const typed=q.trim();
+    if(typed && !assigned.has(typed.toLowerCase())){
+      const exactMatch=poolList.some(p=>p.n.toLowerCase()===typed.toLowerCase());
+      if(!exactMatch){
+        const add=el("div","cand-add"); add.dataset.add=typed;
+        add.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+        add.appendChild(el("span",null,`Add "${typed}"`));
+        sheetList.appendChild(add);
+      }
+    }
+    if(!poolList.length && !typed) sheetList.appendChild(el("div","cand-empty","Type any name to add a player not in the list"));
+  }
+  function choosePlayer(pl){
+    if(!pickerCtx||!pl) return;
+    allstars[league][pickerCtx.conf][pickerCtx.slotId]={n:pl.n, t:pl.t||null, p:pl.p};
+    save(); renderAllstars(); showSheet(false);
+  }
+  sheetList.addEventListener("click", e=>{
+    const add=e.target.closest("[data-add]");
+    if(add){ choosePlayer({n:add.dataset.add, t:null, p:pickerCtx.pos==="ANY"?"F":pickerCtx.pos}); return; }
+    const cand=e.target.closest(".cand[data-idx]");
+    if(cand) choosePlayer(curCandidates[+cand.dataset.idx]);
+  });
+  sheetSearch.addEventListener("input", e=>fillCandidates(e.target.value));
+  sheetSearch.addEventListener("keydown", e=>{
+    if(e.key!=="Enter") return; e.preventDefault();
+    if(curCandidates.length) choosePlayer(curCandidates[0]);
+    else { const t=sheetSearch.value.trim(); if(t) choosePlayer({n:t,t:null,p:pickerCtx.pos==="ANY"?"F":pickerCtx.pos}); }
+  });
+  function showSheet(show){ sheet.classList.toggle("show",show); sheetBackdrop.classList.toggle("show",show); if(!show) pickerCtx=null; }
+  sheetBackdrop.addEventListener("click",()=>showSheet(false));
+  document.getElementById("sheet-close").addEventListener("click",()=>showSheet(false));
+
+  function applyWordmark(){ document.getElementById("wordmark").textContent=`${CONFIG[league].label} Rank and Predict`; }
+  function buildLeagueToggle(){
+    const c=document.getElementById("league-toggle"); c.innerHTML="";
+    [["nba","NBA"],["wnba","WNBA"]].forEach(([lg,lbl])=>{
+      const b=el("button",null,lbl); b.setAttribute("aria-pressed", lg===league);
+      b.addEventListener("click",()=>switchLeague(lg)); c.appendChild(b);
+    });
+  }
+  function switchLeague(lg){
+    if(lg===league) return;
+    league=lg;
+    current=CONFIG[lg].confs[0].key; asConf=CONFIG[lg].confs[0].key;
+    document.body.classList.toggle("wnba", lg==="wnba");
+    buildLeagueToggle(); applyWordmark();
+    fetchLiveRosters(lg);
+    setPage(page);
+    save();
+  }
+
+  const pages={standings:document.getElementById("page-standings"), bracket:document.getElementById("page-bracket"), allstars:document.getElementById("page-allstars")};
+  const navs ={standings:document.getElementById("nav-standings"), bracket:document.getElementById("nav-bracket"), allstars:document.getElementById("nav-allstars")};
   function setPage(p){
+    page=p;
     for(const k in pages){ pages[k].classList.toggle("active",k===p); navs[k].classList.toggle("active",k===p); navs[k].setAttribute("aria-selected",k===p); }
+    if(p==="standings") render();
     if(p==="bracket") renderBracket();
+    if(p==="allstars") renderAllstars();
     window.scrollTo(0,0);
   }
   navs.standings.addEventListener("click",()=>setPage("standings"));
   navs.bracket.addEventListener("click",()=>setPage("bracket"));
+  navs.allstars.addEventListener("click",()=>setPage("allstars"));
 
   let rzT;
   window.addEventListener("resize",()=>{ clearTimeout(rzT); rzT=setTimeout(()=>{ if(pages.bracket.classList.contains("active")) document.querySelectorAll("#bracket-body .bk").forEach(drawConnectors); },150); });
 
-  // ============== INIT ==============
-  (async () => { await load(); render(); setPage("standings"); })();
+  (async () => {
+    await load();
+    document.body.classList.toggle("wnba", league==="wnba");
+    current=CONFIG[league].confs[0].key; asConf=CONFIG[league].confs[0].key;
+    buildLeagueToggle(); applyWordmark();
+    setPage("standings");
+    // Kick off roster fetches in background immediately
+    fetchLiveRosters("nba");
+    fetchLiveRosters("wnba");
+  })();
 })();
 </script>
 </body>
