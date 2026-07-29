@@ -6,7 +6,7 @@
 <title>Rank and Predict</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg-top:#0c1f44; --bg-bot:#091634;
@@ -25,7 +25,7 @@
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{margin:0;padding:0;}
   body{
-    font-family:'Inter',system-ui,sans-serif;
+    font-family:'M PLUS Rounded 1c',system-ui,sans-serif;
     background:linear-gradient(180deg,var(--bg-top),var(--bg-bot));
     background-attachment:fixed; color:var(--cream); min-height:100vh;
     padding:18px 14px calc(96px + env(safe-area-inset-bottom));
@@ -35,14 +35,14 @@
 
   /* Header */
   header{text-align:center;margin:6px 0 14px;}
-  h1{font-family:'Bagel Fat One',cursive;font-weight:400;font-size:clamp(28px,8.5vw,46px);line-height:.96;margin:0;color:var(--cream);letter-spacing:.5px;text-shadow:0 3px 0 rgba(0,0,0,.22);}
+  h1{font-family:'M PLUS Rounded 1c',system-ui,sans-serif;font-weight:900;font-size:clamp(28px,8.5vw,46px);line-height:.96;margin:0;color:var(--cream);letter-spacing:.5px;text-shadow:0 3px 0 rgba(0,0,0,.22);}
   body.wnba h1{text-shadow:0 3px 0 rgba(255,107,0,.5);}
   .sub{font-weight:700;font-size:14px;letter-spacing:.3px;color:var(--cream);margin-top:8px;opacity:.9;}
 
   /* League toggle */
-  .league-toggle{display:flex;background:rgba(0,0,0,.25);border:2px solid rgba(255,255,255,.1);border-radius:14px;padding:4px;margin:14px 0 4px;}
-  .league-toggle button{flex:1;appearance:none;border:0;background:transparent;color:var(--cream-dim);font-family:inherit;font-weight:800;font-size:14px;letter-spacing:1.6px;padding:12px 0;border-radius:10px;cursor:pointer;transition:.18s;}
-  .league-toggle button[aria-pressed="true"]{background:var(--accent);color:#fff;}
+  .league-toggle{display:inline-flex;background:rgba(0,0,0,.35);border:1.5px solid rgba(255,255,255,.12);border-radius:999px;padding:3px;margin:10px auto 6px;gap:2px;}
+  .league-toggle button{flex:none;appearance:none;border:0;background:transparent;color:var(--cream-dim);font-family:inherit;font-weight:800;font-size:11px;letter-spacing:2px;padding:6px 18px;border-radius:999px;cursor:pointer;transition:.18s;}
+  .league-toggle button[aria-pressed="true"]{background:var(--accent);color:#fff;box-shadow:0 1px 6px rgba(0,0,0,.3);}
   .league-toggle button:focus-visible{outline:3px solid var(--focus);outline-offset:2px;}
 
   /* Pages */
@@ -193,6 +193,33 @@
   .aw-team-grid .aw-row{grid-column:span 2;}
   .aw-pos-label{flex:none;font-size:10px;font-weight:800;letter-spacing:.3px;color:#fff;background:#2c477f;border-radius:6px;padding:5px 0;width:36px;text-align:center;}
   body.wnba .aw-pos-label{background:#8a4a1d;}
+
+  /* Share */
+  .share-btn{position:absolute;right:0;top:50%;transform:translateY(-50%);appearance:none;border:0;background:rgba(255,255,255,.1);color:var(--cream);border-radius:10px;padding:8px 12px;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;}
+  .share-btn:active{background:rgba(255,255,255,.2);}
+  .share-btn svg{width:16px;height:16px;}
+  header{position:relative;}
+  .share-modal-backdrop{position:fixed;inset:0;background:rgba(4,9,22,.7);z-index:2000;display:none;align-items:flex-end;justify-content:center;}
+  .share-modal-backdrop.show{display:flex;}
+  .share-modal{background:#0e2147;border:1px solid #2c477f;border-radius:18px 18px 0 0;width:100%;max-width:560px;padding:24px 20px 32px;padding-bottom:calc(32px + env(safe-area-inset-bottom));}
+  body.wnba .share-modal{background:#2e1800;border-color:#a05020;}
+  .share-modal h2{font-family:'M PLUS Rounded 1c',system-ui,sans-serif;font-weight:900;font-size:22px;color:var(--cream);margin:0 0 6px;}
+  .share-modal p{font-size:13px;color:var(--cream-dim);margin:0 0 16px;line-height:1.5;}
+  .share-url{display:flex;gap:8px;margin-bottom:12px;}
+  .share-url input{flex:1;background:#071228;border:1px solid #2c477f;border-radius:10px;color:var(--cream);font-family:inherit;font-size:12px;padding:11px 12px;outline:none;min-width:0;}
+  body.wnba .share-url input{background:#150d04;border-color:#a05020;}
+  .share-copy-btn{appearance:none;border:0;background:var(--accent);color:#fff;font-family:inherit;font-weight:800;font-size:14px;padding:11px 18px;border-radius:10px;cursor:pointer;white-space:nowrap;}
+  .share-copy-btn:active{opacity:.85;}
+  .share-import{margin-top:4px;}
+  .share-import label{font-size:12px;font-weight:700;color:var(--cream-dim);display:block;margin-bottom:6px;letter-spacing:.3px;}
+  .share-import-row{display:flex;gap:8px;}
+  .share-import-row input{flex:1;background:#071228;border:1px solid #2c477f;border-radius:10px;color:var(--cream);font-family:inherit;font-size:12px;padding:11px 12px;outline:none;min-width:0;}
+  body.wnba .share-import-row input{background:#150d04;border-color:#a05020;}
+  .share-load-btn{appearance:none;border:0;background:#1a3060;color:var(--cream);font-family:inherit;font-weight:800;font-size:14px;padding:11px 18px;border-radius:10px;cursor:pointer;white-space:nowrap;}
+  .share-load-btn:active{background:#243f7a;}
+  .share-close{display:block;width:100%;margin-top:14px;appearance:none;border:0;background:transparent;color:var(--cream-dim);font-family:inherit;font-weight:700;font-size:14px;padding:10px;cursor:pointer;border-radius:10px;}
+  .share-close:active{background:rgba(255,255,255,.05);}
+  .share-toast{text-align:center;font-size:13px;font-weight:700;color:var(--accent);height:20px;margin-bottom:4px;}
   @media (prefers-reduced-motion:reduce){*{transition:none !important;}}
 </style>
 </head>
@@ -201,9 +228,15 @@
   <header>
     <h1 id="wordmark">Rank and Predict</h1>
     <div class="sub">Predict the standings and bracket</div>
+    <button class="share-btn" id="share-btn" aria-label="Share picks">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+      Share
+    </button>
   </header>
 
-  <div class="league-toggle" id="league-toggle" role="tablist" aria-label="League"></div>
+  <div style="text-align:center;">
+    <div class="league-toggle" id="league-toggle" role="tablist" aria-label="League"></div>
+  </div>
 
   <!-- STANDINGS PAGE -->
   <section id="page-standings" class="page active">
@@ -231,6 +264,26 @@
     <div class="hint" id="awards-hint"></div>
     <div id="awards-body"></div>
   </section>
+</div>
+
+<div class="share-modal-backdrop" id="share-modal-backdrop">
+  <div class="share-modal">
+    <h2>Share your picks</h2>
+    <p>Copy this link — anyone who opens it will see your exact standings, bracket, All-Stars, and award picks.</p>
+    <div class="share-toast" id="share-toast"></div>
+    <div class="share-url">
+      <input id="share-url-input" type="text" readonly>
+      <button class="share-copy-btn" id="share-copy-btn">Copy</button>
+    </div>
+    <div class="share-import">
+      <label>LOAD SOMEONE ELSE'S PICKS</label>
+      <div class="share-import-row">
+        <input id="share-import-input" type="text" placeholder="Paste a share link or code">
+        <button class="share-load-btn" id="share-load-btn">Load</button>
+      </div>
+    </div>
+    <button class="share-close" id="share-close-btn">Close</button>
+  </div>
 </div>
 
 <nav class="tabbar" role="tablist" aria-label="Pages">
@@ -1144,7 +1197,107 @@
   let rzT;
   window.addEventListener("resize",()=>{ clearTimeout(rzT); rzT=setTimeout(()=>{ if(pages.bracket.classList.contains("active")) document.querySelectorAll("#bracket-body .bk").forEach(drawConnectors); },150); });
 
+  // ================= SHARE =================
+  function encodeState(){
+    const state={v:1,lg:league,order,picks,allstars,awards};
+    const json=JSON.stringify(state);
+    // btoa needs latin1 — use TextEncoder + base64url
+    const bytes=new TextEncoder().encode(json);
+    let bin=''; bytes.forEach(b=>bin+=String.fromCharCode(b));
+    return btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  }
+  function decodeState(code){
+    try{
+      const bin=atob(code.replace(/-/g,'+').replace(/_/g,'/'));
+      const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));
+      return JSON.parse(new TextDecoder().decode(bytes));
+    }catch(e){ return null; }
+  }
+  function applyState(s){
+    if(!s||s.v!==1) return false;
+    if(s.lg&&CONFIG[s.lg]) league=s.lg;
+    if(s.order) for(const lg of ["nba","wnba"]) for(const cf of CONFIG[lg].confs){
+      const a=s.order[lg]?.[cf.key];
+      if(Array.isArray(a)&&a.length===DEFAULTS[lg][cf.key].length) order[lg][cf.key]=[...a];
+    }
+    if(s.picks&&typeof s.picks==="object") picks=s.picks;
+    if(s.allstars) for(const lg of ["nba","wnba"]) for(const cf of CONFIG[lg].confs){
+      if(s.allstars[lg]?.[cf.key]) allstars[lg][cf.key]={...s.allstars[lg][cf.key]};
+    }
+    if(s.awards) for(const lg of ["nba","wnba"]){
+      if(s.awards[lg]) awards[lg]={...s.awards[lg]};
+    }
+    return true;
+  }
+  function shareURL(){
+    const code=encodeState();
+    const base=location.href.split('#')[0];
+    return `${base}#${code}`;
+  }
+
+  // Modal wiring
+  const shareModalBackdrop=document.getElementById('share-modal-backdrop');
+  const shareUrlInput=document.getElementById('share-url-input');
+  const shareToast=document.getElementById('share-toast');
+  let shareToastT;
+  function showShareToast(msg){
+    shareToast.textContent=msg;
+    clearTimeout(shareToastT);
+    shareToastT=setTimeout(()=>shareToast.textContent='',2200);
+  }
+  document.getElementById('share-btn').addEventListener('click',()=>{
+    shareUrlInput.value=shareURL();
+    shareModalBackdrop.classList.add('show');
+    shareUrlInput.select();
+  });
+  document.getElementById('share-copy-btn').addEventListener('click',async()=>{
+    const url=shareURL();
+    shareUrlInput.value=url;
+    try{ await navigator.clipboard.writeText(url); showShareToast('✓ Link copied!'); }
+    catch(e){
+      shareUrlInput.select();
+      document.execCommand('copy');
+      showShareToast('✓ Link copied!');
+    }
+  });
+  document.getElementById('share-close-btn').addEventListener('click',()=>{
+    shareModalBackdrop.classList.remove('show');
+  });
+  shareModalBackdrop.addEventListener('click',e=>{
+    if(e.target===shareModalBackdrop) shareModalBackdrop.classList.remove('show');
+  });
+  document.getElementById('share-load-btn').addEventListener('click',()=>{
+    const raw=document.getElementById('share-import-input').value.trim();
+    const code=raw.includes('#')?raw.split('#').pop():raw;
+    const s=decodeState(code);
+    if(!s){ showShareToast('⚠ Invalid code'); return; }
+    applyState(s);
+    save();
+    document.body.classList.toggle('wnba',league==='wnba');
+    current=CONFIG[league].confs[0].key; asConf=CONFIG[league].confs[0].key;
+    buildLeagueToggle(); applyWordmark();
+    setPage('standings');
+    shareModalBackdrop.classList.remove('show');
+    showShareToast('✓ Picks loaded!');
+  });
+
   (async () => {
+    // Check URL hash first — shared link takes priority
+    const hash=location.hash.slice(1);
+    if(hash){
+      const s=decodeState(hash);
+      if(s&&applyState(s)){
+        // loaded from URL — skip storage load
+        document.body.classList.toggle('wnba',league==='wnba');
+        current=CONFIG[league].confs[0].key; asConf=CONFIG[league].confs[0].key;
+        buildLeagueToggle(); applyWordmark();
+        setPage('standings');
+        fetchLiveRosters('nba');
+        fetchLiveRosters('wnba');
+        return;
+      }
+    }
+    // No valid hash — load from storage as normal
     await load();
     document.body.classList.toggle("wnba", league==="wnba");
     current=CONFIG[league].confs[0].key; asConf=CONFIG[league].confs[0].key;
