@@ -222,6 +222,14 @@
   .xs .aw-label{width:auto;margin-right:6px;}
   .xs .aw-row:has(.aw-pos-label) .aw-label{display:none;}
   .xs .aw-name,.xs .as-name,.xs .bk-name,.xs .name{overflow:visible;text-overflow:clip;}
+  /* Mobile export preview */
+  .xp{position:fixed;inset:0;z-index:4000;background:#060b18;display:flex;flex-direction:column;align-items:center;padding:calc(14px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom));gap:10px;}
+  .xp img{flex:1;min-height:0;max-width:100%;object-fit:contain;border-radius:10px;-webkit-touch-callout:default;}
+  .xp-hint{font-size:12px;font-weight:700;color:var(--cream-dim);}
+  .xp-bar{display:flex;gap:10px;width:100%;max-width:420px;}
+  .xp-bar button{flex:1;appearance:none;border:0;border-radius:12px;padding:13px 0;font-family:inherit;font-weight:800;font-size:15px;cursor:pointer;}
+  .xp-save{background:var(--accent);color:#fff;}
+  .xp-close{background:rgba(255,255,255,.12);color:var(--cream);}
   /* Series length chips */
   .bk-games{display:flex;gap:4px;justify-content:center;}
   .bk-games button{appearance:none;border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.25);color:var(--cream-dim);font-family:inherit;font-weight:800;font-size:10px;width:24px;height:20px;border-radius:6px;cursor:pointer;padding:0;}
@@ -1405,10 +1413,37 @@
     const bg=getComputedStyle(document.body).getPropertyValue('--bg-top').trim()||'#0c1f44';
     try{
       const canvas=await h2c(stage,{backgroundColor:bg, scale:2, useCORS:true, logging:false});
-      const a=document.createElement('a');
-      a.download=`${league}-${page}.png`; a.href=canvas.toDataURL('image/png'); a.click();
-      showExportToast('✓ Image saved!');
+      const blob=await new Promise(r=>canvas.toBlob(r,'image/png'));
+      const name=`${league}-${page}.png`;
+      if(matchMedia('(pointer:coarse)').matches) showExportPreview(blob,name);
+      else { downloadBlob(blob,name); showExportToast('✓ Image saved!'); }
     } finally { stage.remove(); }
+  }
+  function downloadBlob(blob,name){
+    const url=URL.createObjectURL(blob), a=document.createElement('a');
+    a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),10000);
+  }
+  // Mobile: preview overlay. The Save button is a fresh tap, which the iOS share sheet requires.
+  function showExportPreview(blob,name){
+    document.getElementById('export-toast').classList.remove('show');
+    const url=URL.createObjectURL(blob);
+    const ov=el('div','xp');
+    const img=el('img'); img.src=url; img.alt='Exported picks';
+    const bar=el('div','xp-bar');
+    const save=el('button','xp-save','Save / Share'), close=el('button','xp-close','Close');
+    bar.appendChild(close); bar.appendChild(save);
+    ov.appendChild(el('div','xp-hint','Tap Save, or long-press the image'));
+    ov.appendChild(img); ov.appendChild(bar);
+    document.body.appendChild(ov);
+    const done=()=>{ ov.remove(); URL.revokeObjectURL(url); };
+    close.addEventListener('click',done);
+    save.addEventListener('click',async()=>{
+      const file=new File([blob],name,{type:'image/png'});
+      if(navigator.canShare&&navigator.canShare({files:[file]})){
+        try{ await navigator.share({files:[file]}); done(); }catch(e){ /* cancelled: keep preview open */ }
+      } else downloadBlob(blob,name);
+    });
   }
   document.getElementById('export-btn').addEventListener('click', ()=>{
     doExport().catch(()=>showExportToast('⚠ Export failed'));
