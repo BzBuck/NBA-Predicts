@@ -85,9 +85,9 @@
   /* Bracket */
   .bk-section-title{font-weight:800;font-size:13px;letter-spacing:1.5px;color:var(--cream-dim);text-transform:uppercase;margin:18px 2px 10px;}
   .bk-scroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;padding-bottom:6px;}
-  .bk{position:relative;display:flex;gap:32px;width:max-content;height:440px;}
+  .bk{position:relative;display:flex;gap:32px;width:max-content;height:540px;}
   .bk-col{width:118px;display:flex;flex-direction:column;justify-content:space-around;flex:none;}
-  .bk-match{height:84px;display:flex;flex-direction:column;justify-content:center;gap:8px;position:relative;z-index:1;}
+  .bk-match{height:112px;display:flex;flex-direction:column;justify-content:center;gap:8px;position:relative;z-index:1;}
   .bk-team{height:38px;display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--card-edge);border-radius:9px;padding:0 7px;cursor:default;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:.12s;overflow:hidden;}
   .bk-team.pickable{cursor:pointer;}
   .bk-team.pickable:active{transform:scale(.97);}
@@ -188,6 +188,53 @@
   .aw-clear{flex:none;width:30px;height:30px;border:0;background:transparent;color:#9aa1b2;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
   .aw-clear:active{background:rgba(0,0,0,.06);color:var(--ink);}
   .aw-clear svg{width:16px;height:16px;}
+  /* Export */
+  header{position:relative;}
+  .league-row{position:relative;text-align:center;}
+  @media (max-width:370px){ .league-row{display:flex;flex-direction:column-reverse;align-items:center;} .league-row .export-btn{position:static;transform:none;margin:0 0 6px;} }
+  .export-btn{position:absolute;right:0;top:50%;transform:translateY(-50%);appearance:none;border:0;background:rgba(255,255,255,.1);color:var(--cream);border-radius:999px;padding:7px 12px;font-family:inherit;font-weight:800;font-size:11px;letter-spacing:.5px;cursor:pointer;display:flex;align-items:center;gap:5px;}
+  .export-btn:active{background:rgba(255,255,255,.2);}
+  .export-btn svg{width:14px;height:14px;}
+  .export-toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-weight:800;font-size:13px;padding:10px 20px;border-radius:999px;z-index:3000;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap;}
+  .export-toast.show{opacity:1;}
+  /* Export stage (off-screen) */
+  .xs{position:fixed;left:-20000px;top:0;padding:24px 28px 28px;background:linear-gradient(180deg,var(--bg-top),var(--bg-bot));color:var(--cream);font-family:'M PLUS Rounded 1c',system-ui,sans-serif;width:max-content;}
+  .xs-head{text-align:center;margin-bottom:18px;}
+  .xs-title{font-weight:900;font-size:30px;line-height:1.1;}
+  .xs-sub{font-weight:700;font-size:13px;color:var(--cream-dim);margin-top:4px;}
+  .xs-cols{display:flex;gap:28px;align-items:flex-start;}
+  .xs-col{width:360px;flex:none;}
+  .xs-col-title{font-weight:900;font-size:15px;letter-spacing:1px;text-transform:uppercase;color:var(--cream);margin:0 2px 10px;}
+  .xs-foot{margin-top:8px;max-width:520px;margin-left:auto;margin-right:auto;}
+  .xs .bk-scroll{overflow:visible;}
+  .xs .nudge,.xs .grip,.xs .aw-clear,.xs .as-clear,.xs .aw-plus,.xs .as-plus,.xs .aw-ru-toggle{display:none !important;}
+  .xs .bk-games button:not(.on){display:none;}
+  .xs .aw-row,.xs .as-slot,.xs .card{box-shadow:none;}
+  .xs .xs-col{width:400px;}
+  .xs .bk-col{width:150px;}
+  .xs .bk.rev{flex-direction:row-reverse;}
+  .xs .xs-center{width:380px;}
+  .xs .xs-center .finals-row{flex-direction:column;gap:8px;}
+  .xs .xs-center .finals-vs{justify-content:center;}
+  .xs .xs-center .finals .bk-team{flex:none;height:48px;}
+  .xs .xs-center .aw-label{display:none;}
+  .xs .xs-center .bk-section-title{text-align:center;}
+  .xs .aw-label{width:auto;margin-right:6px;}
+  .xs .aw-row:has(.aw-pos-label) .aw-label{display:none;}
+  .xs .aw-name,.xs .as-name,.xs .bk-name,.xs .name{overflow:visible;text-overflow:clip;}
+  /* Series length chips */
+  .bk-games{display:flex;gap:4px;justify-content:center;}
+  .bk-games button{appearance:none;border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.25);color:var(--cream-dim);font-family:inherit;font-weight:800;font-size:10px;width:24px;height:20px;border-radius:6px;cursor:pointer;padding:0;}
+  .bk-games button.on{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .bk-games-lbl{font-size:9px;font-weight:800;letter-spacing:.6px;color:var(--cream-dim);align-self:center;margin-right:2px;}
+  .bk-in{font-size:10px;font-weight:800;color:var(--accent);margin-left:auto;flex:none;}
+  .champ-in{font-size:12px;font-weight:700;color:var(--cream-dim);margin-top:4px;}
+  /* Award runner-ups */
+  .aw-ru-toggle{display:block;margin:-2px 0 10px auto;appearance:none;border:0;background:transparent;color:var(--cream-dim);font-family:inherit;font-weight:700;font-size:11px;letter-spacing:.3px;cursor:pointer;padding:2px 4px;}
+  .aw-ru-toggle:active{color:var(--cream);}
+  .aw-row.ru{height:46px;margin-left:24px;}
+  .aw-row.ru .aw-trophy{font-size:12px;font-weight:800;color:var(--cream-dim);}
+  .aw-row.ru.empty .aw-trophy{color:#6f7ea3;}
   /* All-team grid */
   .aw-team-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
   .aw-team-grid .aw-row{grid-column:span 2;}
@@ -199,12 +246,7 @@
   .share-btn:active{background:rgba(255,255,255,.2);}
   .share-btn svg{width:16px;height:16px;}
   header{position:relative;}
-  .share-modal-backdrop{position:fixed;inset:0;background:rgba(4,9,22,.7);z-index:2000;display:none;align-items:flex-end;justify-content:center;}
-  .share-modal-backdrop.show{display:flex;}
-  .share-modal{background:#0e2147;border:1px solid #2c477f;border-radius:18px 18px 0 0;width:100%;max-width:560px;padding:24px 20px 32px;padding-bottom:calc(32px + env(safe-area-inset-bottom));}
-  body.wnba .share-modal{background:#2e1800;border-color:#a05020;}
-  .share-modal h2{font-family:'M PLUS Rounded 1c',system-ui,sans-serif;font-weight:900;font-size:22px;color:var(--cream);margin:0 0 6px;}
-  .share-modal p{font-size:13px;color:var(--cream-dim);margin:0 0 16px;line-height:1.5;}
+
   .share-url{display:flex;gap:8px;margin-bottom:12px;}
   .share-url input{flex:1;background:#071228;border:1px solid #2c477f;border-radius:10px;color:var(--cream);font-family:inherit;font-size:12px;padding:11px 12px;outline:none;min-width:0;}
   body.wnba .share-url input{background:#150d04;border-color:#a05020;}
@@ -228,13 +270,14 @@
   <header>
     <h1 id="wordmark">Rank and Predict</h1>
     <div class="sub">Predict the standings and bracket</div>
-    <button class="share-btn" id="share-btn" aria-label="Share picks">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-      Share
-    </button>
   </header>
 
-  <div style="text-align:center;">
+  <div class="league-row">
+    <button class="export-btn" id="export-btn" aria-label="Export picks as image">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export
+    </button>
+
     <div class="league-toggle" id="league-toggle" role="tablist" aria-label="League"></div>
   </div>
 
@@ -266,25 +309,7 @@
   </section>
 </div>
 
-<div class="share-modal-backdrop" id="share-modal-backdrop">
-  <div class="share-modal">
-    <h2>Share your picks</h2>
-    <p>Copy this link — anyone who opens it will see your exact standings, bracket, All-Stars, and award picks.</p>
-    <div class="share-toast" id="share-toast"></div>
-    <div class="share-url">
-      <input id="share-url-input" type="text" readonly>
-      <button class="share-copy-btn" id="share-copy-btn">Copy</button>
-    </div>
-    <div class="share-import">
-      <label>LOAD SOMEONE ELSE'S PICKS</label>
-      <div class="share-import-row">
-        <input id="share-import-input" type="text" placeholder="Paste a share link or code">
-        <button class="share-load-btn" id="share-load-btn">Load</button>
-      </div>
-    </div>
-    <button class="share-close" id="share-close-btn">Close</button>
-  </div>
-</div>
+<div class="export-toast" id="export-toast"></div>
 
 <nav class="tabbar" role="tablist" aria-label="Pages">
   <button id="nav-standings" class="active" role="tab" aria-selected="true">
@@ -319,38 +344,40 @@
 (() => {
   "use strict";
 
+  // Default = final 2025-26 seeding (7-10 after the play-in)
   const NBA_TEAMS = {
     west:[
-      ["OKC","Oklahoma City Thunder","#007ac1","okc"],["HOU","Houston Rockets","#ce1141","hou"],
+      ["OKC","Oklahoma City Thunder","#007ac1","okc"],["SAS","San Antonio Spurs","#20242a","sa"],
       ["DEN","Denver Nuggets","#0e2240","den"],["LAL","Los Angeles Lakers","#552583","lal"],
-      ["GSW","Golden State Warriors","#1d428a","gs"],["SAS","San Antonio Spurs","#20242a","sa"],
-      ["LAC","LA Clippers","#c8102e","lac"],["DAL","Dallas Mavericks","#00538c","dal"],
-      ["MIN","Minnesota Timberwolves","#236192","min"],["POR","Portland Trail Blazers","#e03a3e","por"],
-      ["MEM","Memphis Grizzlies","#5d76a9","mem"],["NOP","New Orleans Pelicans","#0c2340","no"],
-      ["SAC","Sacramento Kings","#5a2d81","sac"],["PHX","Phoenix Suns","#e56020","phx"],
+      ["HOU","Houston Rockets","#ce1141","hou"],["MIN","Minnesota Timberwolves","#236192","min"],
+      ["POR","Portland Trail Blazers","#e03a3e","por"],["PHX","Phoenix Suns","#e56020","phx"],
+      ["LAC","LA Clippers","#c8102e","lac"],["GSW","Golden State Warriors","#1d428a","gs"],
+      ["NOP","New Orleans Pelicans","#0c2340","no"],["DAL","Dallas Mavericks","#00538c","dal"],
+      ["MEM","Memphis Grizzlies","#5d76a9","mem"],["SAC","Sacramento Kings","#5a2d81","sac"],
       ["UTA","Utah Jazz","#002b5c","utah"],
     ],
     east:[
-      ["CLE","Cleveland Cavaliers","#860038","cle"],["NYK","New York Knicks","#006bb6","ny"],
-      ["BOS","Boston Celtics","#007a33","bos"],["ORL","Orlando Magic","#0077c0","orl"],
-      ["ATL","Atlanta Hawks","#c8102e","atl"],["DET","Detroit Pistons","#1d42ba","det"],
-      ["MIL","Milwaukee Bucks","#00471b","mil"],["PHI","Philadelphia 76ers","#006bb6","phi"],
-      ["IND","Indiana Pacers","#002d62","ind"],["MIA","Miami Heat","#98002e","mia"],
-      ["CHI","Chicago Bulls","#ce1141","chi"],["TOR","Toronto Raptors","#ce1141","tor"],
-      ["BKN","Brooklyn Nets","#20242a","bkn"],["CHA","Charlotte Hornets","#00788c","cha"],
+      ["DET","Detroit Pistons","#1d42ba","det"],["BOS","Boston Celtics","#007a33","bos"],
+      ["NYK","New York Knicks","#006bb6","ny"],["CLE","Cleveland Cavaliers","#860038","cle"],
+      ["TOR","Toronto Raptors","#ce1141","tor"],["ATL","Atlanta Hawks","#c8102e","atl"],
+      ["PHI","Philadelphia 76ers","#006bb6","phi"],["ORL","Orlando Magic","#0077c0","orl"],
+      ["CHA","Charlotte Hornets","#00788c","cha"],["MIA","Miami Heat","#98002e","mia"],
+      ["MIL","Milwaukee Bucks","#00471b","mil"],["CHI","Chicago Bulls","#ce1141","chi"],
+      ["BKN","Brooklyn Nets","#20242a","bkn"],["IND","Indiana Pacers","#002d62","ind"],
       ["WAS","Washington Wizards","#002b5c","wsh"],
     ],
   };
+  // Default = final 2026 regular-season order
   const WNBA_TEAMS = {
     all:[
-      ["LV","Las Vegas Aces","#1a1a1a","lv"],["NY","New York Liberty","#00a693","ny"],
-      ["MIN","Minnesota Lynx","#236192","min"],["ATL","Atlanta Dream","#e03a3e","atl"],
-      ["IND","Indiana Fever","#002d62","ind"],["PHX","Phoenix Mercury","#201747","phx"],
-      ["SEA","Seattle Storm","#2c5234","sea"],["LA","Los Angeles Sparks","#552583","la"],
-      ["DAL","Dallas Wings","#0067b1","dal"],["CHI","Chicago Sky","#418fde","chi"],
-      ["GSV","Golden State Valkyries","#6f2da8","gs"],["WAS","Washington Mystics","#c8102e","wsh"],
+      ["MIN","Minnesota Lynx","#236192","min"],["GSV","Golden State Valkyries","#6f2da8","gs"],
+      ["LV","Las Vegas Aces","#1a1a1a","lv"],["ATL","Atlanta Dream","#e03a3e","atl"],
+      ["WAS","Washington Mystics","#c8102e","wsh"],["IND","Indiana Fever","#002d62","ind"],
+      ["DAL","Dallas Wings","#0067b1","dal"],["NY","New York Liberty","#00a693","ny"],
+      ["POR","Portland Fire","#d50032","por"],["LA","Los Angeles Sparks","#552583","la"],
+      ["PHX","Phoenix Mercury","#201747","phx"],["CHI","Chicago Sky","#418fde","chi"],
       ["CONN","Connecticut Sun","#dc4405","conn"],["TOR","Toronto Tempo","#008c95","tor"],
-      ["POR","Portland Fire","#d50032","por"],
+      ["SEA","Seattle Storm","#2c5234","sea"],
     ],
   };
 
@@ -610,6 +637,8 @@
   let current="west", asConf="west";
   let order=JSON.parse(JSON.stringify(DEFAULTS));
   let picks={};
+  let games={}; // matchId -> series length
+  const awardRU={nba:{},wnba:{}}; // awardId -> runner-ups enabled
   const allstars={nba:{},wnba:{}};
   for(const lg of ["nba","wnba"]) for(const cf of CONFIG[lg].confs) allstars[lg][cf.key]={};
   let drag=null, pickerCtx=null, curCandidates=[];
@@ -631,7 +660,7 @@
   }
 
   const store=(window.storage && typeof window.storage.set==="function") ? window.storage : null;
-  async function save(){ if(!store) return; try{ await store.set("rnp", JSON.stringify({league,order,picks,allstars,awards}), false); }catch(e){} }
+  async function save(){ if(!store) return; try{ await store.set("rnp", JSON.stringify({league,order,picks,games,allstars,awards,awardRU}), false); }catch(e){} }
   async function load(){
     if(!store) return;
     try{
@@ -644,6 +673,8 @@
           if(Array.isArray(a) && a.length===DEFAULTS[lg][cf.key].length) order[lg][cf.key]=a;
         }
         if(o.picks && typeof o.picks==="object") picks=o.picks;
+        if(o.games && typeof o.games==="object") games=o.games;
+        if(o.awardRU){ for(const lg of ["nba","wnba"]) if(o.awardRU[lg]) Object.assign(awardRU[lg],o.awardRU[lg]); }
         if(o.awards && typeof o.awards==="object"){ for(const lg of ["nba","wnba"]) if(o.awards[lg]) awards[lg]={...o.awards[lg]}; }
         if(o.allstars) for(const lg of ["nba","wnba"]) for(const cf of CONFIG[lg].confs){
           if(o.allstars[lg]&&typeof o.allstars[lg][cf.key]==="object") allstars[lg][cf.key]=o.allstars[lg][cf.key];
@@ -786,6 +817,28 @@
     m.champ=m[`${pre}-r3m0`].winner;
     return m;
   }
+  // Best-of length per round: NBA all best-of-7; WNBA first round 3, semis 5, finals 7
+  function seriesLen(matchId){
+    if(league==="nba") return 7;
+    if(matchId.endsWith("FINALS")||/-r3m/.test(matchId)) return 7;
+    if(/-r2m/.test(matchId)) return 5;
+    return 3;
+  }
+  function gamesFor(matchId){
+    const n=seriesLen(matchId), g=games[matchId];
+    return (g && g>=Math.ceil(n/2) && g<=n) ? g : null;
+  }
+  function gamesRow(matchId){
+    const n=seriesLen(matchId), need=Math.ceil(n/2), cur=gamesFor(matchId);
+    const row=el("div","bk-games");
+    row.appendChild(el("span","bk-games-lbl","IN"));
+    for(let g=need; g<=n; g++){
+      const b=el("button",g===cur?"on":null,String(g));
+      b.dataset.games=g; b.dataset.match=matchId;
+      row.appendChild(b);
+    }
+    return row;
+  }
   function teamCard(abbr, matchId, matchWinner, pickable, cf){
     const card=el("div","bk-team");
     if(!abbr){ card.classList.add("empty"); card.appendChild(el("span","bk-wait","—")); return card; }
@@ -794,7 +847,8 @@
     card.appendChild(buildLogo(t,"bk-logo"));
     card.appendChild(el("span","bk-name", nick(t.name)));
     card.dataset.abbr=abbr; card.dataset.match=matchId;
-    if(matchWinner===abbr) card.classList.add("won"); else if(matchWinner) card.classList.add("lost");
+    if(matchWinner===abbr) card.classList.add("won");
+    else if(matchWinner) card.classList.add("lost");
     if(pickable) card.classList.add("pickable");
     return card;
   }
@@ -808,16 +862,17 @@
         const match=m[id], both=match.parts.every(Boolean);
         const matchEl=el("div","bk-match"); matchEl.dataset.m=id.replace(pre+"-","");
         match.parts.forEach(abbr=>matchEl.appendChild(teamCard(abbr,id,match.winner,both,cf)));
+        if(match.winner) matchEl.appendChild(gamesRow(id));
         colEl.appendChild(matchEl);
       });
       bk.appendChild(colEl);
     });
     return bk;
   }
-  function champBanner(abbr, labelTxt, emptyMsg){
+  function champBanner(abbr, labelTxt, emptyMsg, inGames){
     const b=el("div","champ-banner");
     b.appendChild(el("div","champ-label", labelTxt));
-    if(abbr){ const t=team(abbr); const ct=el("div","champ-team"); ct.appendChild(buildLogo(t,"champ-logo")); ct.appendChild(el("span",null,t.name)); b.appendChild(ct); }
+    if(abbr){ const t=team(abbr); const ct=el("div","champ-team"); ct.appendChild(buildLogo(t,"champ-logo")); ct.appendChild(el("span",null,t.name)); b.appendChild(ct); if(inGames) b.appendChild(el("div","champ-in","Wins in "+inGames)); }
     else b.appendChild(el("div","champ-empty", emptyMsg));
     return b;
   }
@@ -842,13 +897,21 @@
     row.appendChild(el("span","finals-vs","vs"));
     row.appendChild(finalsCard(ec,id,champ,both,"East"));
     wrap.appendChild(row);
-    wrap.appendChild(champBanner(champ, CONFIG[league].champLabel, both?"Tap a finalist to crown your champion":"Decide both conference finals first"));
+    if(champ) wrap.appendChild(gamesRow(id));
+    wrap.appendChild(champBanner(champ, CONFIG[league].champLabel, both?"Tap a finalist to crown your champion":"Decide both conference finals first", gamesFor(id)));
     return wrap;
+  }
+  // The two Finals teams, when both are decided; used to narrow the FMVP picker
+  function finalists(){
+    const parts = CONFIG[league].finals
+      ? [computeConf("west").champ, computeConf("east").champ]
+      : computeConf(CONFIG[league].confs[0].key)[`${league}-${CONFIG[league].confs[0].key}-r3m0`].parts;
+    return parts.every(Boolean) ? parts : null;
   }
   function buildSingleChampion(cf){
     const champ=computeConf(cf).champ;
     const wrap=el("div","finals");
-    wrap.appendChild(champBanner(champ, CONFIG[league].champLabel, "Decide the final to crown your champion"));
+    wrap.appendChild(champBanner(champ, CONFIG[league].champLabel, "Decide the final to crown your champion", gamesFor(`${league}-${cf}-r3m0`)));
     return wrap;
   }
   function drawConnectors(bk){
@@ -862,8 +925,9 @@
       const fe=bk.querySelector(`[data-m="${from}"]`), te=bk.querySelector(`[data-m="${to}"]`);
       if(!fe||!te) return;
       const fr=fe.getBoundingClientRect(), tr=te.getBoundingClientRect();
-      const x1=fr.right-base.left+bk.scrollLeft, y1=fr.top+fr.height/2-base.top;
-      const x2=tr.left-base.left+bk.scrollLeft,  y2=tr.top+tr.height/2-base.top;
+      const rev=bk.classList.contains('rev');
+      const x1=(rev?fr.left:fr.right)-base.left+bk.scrollLeft, y1=fr.top+fr.height/2-base.top;
+      const x2=(rev?tr.right:tr.left)-base.left+bk.scrollLeft,  y2=tr.top+tr.height/2-base.top;
       const mx=(x1+x2)/2;
       const p=document.createElementNS("http://www.w3.org/2000/svg","path");
       p.setAttribute("d",`M${x1},${y1} H${mx} V${y2} H${x2}`); p.setAttribute("class","bk-line");
@@ -888,9 +952,16 @@
       body.appendChild(el("div","bk-section-title","Champion"));
       body.appendChild(buildSingleChampion(CONFIG[league].confs[0].key));
     }
+    body.appendChild(el("div","bk-section-title","Finals MVP"));
+    body.appendChild(awRow("fmvp","Finals MVP","🏅","ANY"));
     requestAnimationFrame(()=> body.querySelectorAll(".bk").forEach(drawConnectors));
   }
   document.getElementById("bracket-body").addEventListener("click", e=>{
+    const fc=e.target.closest("[data-awclear]");
+    if(fc){ delete awards[league][fc.dataset.awclear]; save(); renderBracket(); return; }
+    if(e.target.closest('.aw-row[data-awid="fmvp"]')){ openPickerForAward("fmvp","Finals MVP","ANY",finalists()); return; }
+    const gb=e.target.closest("[data-games]");
+    if(gb){ const id=gb.dataset.match, g=+gb.dataset.games; if(games[id]===g) delete games[id]; else games[id]=g; save(); renderBracket(); return; }
     const card=e.target.closest(".bk-team.pickable"); if(!card) return;
     picks[card.dataset.match]=card.dataset.abbr; save(); renderBracket();
   });
@@ -976,7 +1047,7 @@
   function chooseAward(pl){
     if(!pickerCtx||!pl?.n) return;
     awards[league][pickerCtx.awId]={n:pl.n, t:pl.t||null, p:pl.p};
-    save(); renderAwards(); showSheet(false);
+    save(); if(pickerCtx.awId==="fmvp") renderBracket(); else renderAwards(); showSheet(false);
   }
   function choosePlayer(pl){
     if(!pickerCtx||!pl) return;
@@ -1050,6 +1121,8 @@
           {id:"a3g1",pos:"G"},{id:"a3g2",pos:"G"},
           {id:"a3f1",pos:"F"},{id:"a3f2",pos:"F"},{id:"a3c1",pos:"F"},
         ]},
+        {team:"1st All-Defensive", slots:[1,2,3,4,5].map(i=>({id:"d1_"+i,pos:"ANY"}))},
+        {team:"2nd All-Defensive", slots:[1,2,3,4,5].map(i=>({id:"d2_"+i,pos:"ANY"}))},
       ],
     },
     wnba:{
@@ -1058,7 +1131,7 @@
         {id:"dpoy",      label:"Def. Player",      emoji:"🛡️",  pos:"ANY"},
         {id:"roy",       label:"Rookie of Year",   emoji:"🌟", pos:"ANY"},
         {id:"mip",       label:"Most Improved",    emoji:"📈", pos:"ANY"},
-        {id:"6woman",    label:"Sixth Woman",       emoji:"🔥", pos:"ANY"},
+        {id:"6woman",    label:"Sixth Player",       emoji:"🔥", pos:"ANY"},
         {id:"coy",       label:"Coach of Year",    emoji:"📋", pos:"COACH"},
       ],
       allteams:[
@@ -1070,6 +1143,8 @@
           {id:"w2a",pos:"ANY"},{id:"w2b",pos:"ANY"},{id:"w2c",pos:"ANY"},
           {id:"w2d",pos:"ANY"},{id:"w2e",pos:"ANY"},
         ]},
+        {team:"1st All-Defensive", slots:[1,2,3,4,5].map(i=>({id:"d1_"+i,pos:"ANY"}))},
+        {team:"2nd All-Defensive", slots:[1,2,3,4,5].map(i=>({id:"d2_"+i,pos:"ANY"}))},
       ],
     },
   };
@@ -1088,6 +1163,13 @@
     body.appendChild(el("div","aw-section-title","Individual Awards"));
     cfg.individual.forEach(aw=>{
       body.appendChild(awRow(aw.id, aw.label, aw.emoji, aw.pos));
+      const on=!!awardRU[league][aw.id];
+      if(on){
+        body.appendChild(awRow(aw.id+"_2", aw.label, "2nd", aw.pos, true));
+        body.appendChild(awRow(aw.id+"_3", aw.label, "3rd", aw.pos, true));
+      }
+      const t=el("button","aw-ru-toggle", on?"− Hide runner-ups":"+ Runner-ups");
+      t.dataset.rutoggle=aw.id; body.appendChild(t);
     });
 
     // All-league teams
@@ -1100,9 +1182,9 @@
     });
   }
 
-  function awRow(id, label, emoji, pos){
+  function awRow(id, label, emoji, pos, ru){
     const pick = awards[league][id];
-    const row = el("div","aw-row"+(pick?"":" empty")); row.dataset.awid=id; row.dataset.pos=pos;
+    const row = el("div","aw-row"+(ru?" ru":"")+(pick?"":" empty")); row.dataset.awid=id; row.dataset.pos=pos;
     if(emoji) row.appendChild(el("span","aw-trophy",emoji));
     else {
       const posTag = el("span","aw-pos-label"); posTag.textContent = pos==="ANY"?"PL":pos; row.appendChild(posTag);
@@ -1127,6 +1209,8 @@
   document.getElementById("awards-body").addEventListener("click", e=>{
     const clr = e.target.closest("[data-awclear]");
     if(clr){ delete awards[league][clr.dataset.awclear]; save(); renderAwards(); return; }
+    const rt = e.target.closest("[data-rutoggle]");
+    if(rt){ const id=rt.dataset.rutoggle; if(awardRU[league][id]) delete awardRU[league][id]; else awardRU[league][id]=true; save(); renderAwards(); return; }
     const row = e.target.closest(".aw-row[data-awid]"); if(!row) return;
     const pos = row.dataset.pos;
     if(pos==="COACH"){
@@ -1137,7 +1221,7 @@
     }
   });
 
-  function openPickerForAward(awId, label, pos){
+  function openPickerForAward(awId, label, pos, teamFilter){
     pickerCtx = {awId, slotId:null, pos, isAward:true};
     if(pos==="COACH"){
       pickerCtx.pool = COACHES[league];
@@ -1148,7 +1232,7 @@
       allConfs.forEach(cf=>{
         (CONFIG[league].players[cf]||[]).forEach(p=>{ if(!seen.has(p.n)){ seen.add(p.n); combined.push(p); }});
       });
-      pickerCtx.pool = combined;
+      pickerCtx.pool = (teamFilter&&teamFilter.length) ? combined.filter(p=>teamFilter.includes(p.t)) : combined;
     }
     document.getElementById("sheet-title").textContent = label;
     sheetSearch.value=""; fillAwardCandidates(""); showSheet(true);
@@ -1197,113 +1281,145 @@
   let rzT;
   window.addEventListener("resize",()=>{ clearTimeout(rzT); rzT=setTimeout(()=>{ if(pages.bracket.classList.contains("active")) document.querySelectorAll("#bracket-body .bk").forEach(drawConnectors); },150); });
 
-  // ================= SHARE =================
-  function encodeState(){
-    const state={v:1,lg:league,order,picks,allstars,awards};
-    const json=JSON.stringify(state);
-    // btoa needs latin1 — use TextEncoder + base64url
-    const bytes=new TextEncoder().encode(json);
-    let bin=''; bytes.forEach(b=>bin+=String.fromCharCode(b));
-    return btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  // ================= EXPORT AS IMAGE =================
+  // Exports only the current tab. Builds a clean off-screen layout (filled picks only,
+  // no controls) and captures it at its natural size, so nothing gets stretched.
+  let h2cReady=null;
+  function loadH2C(){
+    if(h2cReady) return h2cReady;
+    h2cReady=new Promise((res,rej)=>{
+      const s=document.createElement('script');
+      s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+      s.onload=()=>res(window.html2canvas); s.onerror=rej;
+      document.head.appendChild(s);
+    });
+    return h2cReady;
   }
-  function decodeState(code){
-    try{
-      const bin=atob(code.replace(/-/g,'+').replace(/_/g,'/'));
-      const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));
-      return JSON.parse(new TextDecoder().decode(bytes));
-    }catch(e){ return null; }
+  function showExportToast(msg,dur=2500){
+    const t=document.getElementById('export-toast');
+    t.textContent=msg; t.classList.add('show');
+    clearTimeout(showExportToast._t); showExportToast._t=setTimeout(()=>t.classList.remove('show'),dur);
   }
-  function applyState(s){
-    if(!s||s.v!==1) return false;
-    if(s.lg&&CONFIG[s.lg]) league=s.lg;
-    if(s.order) for(const lg of ["nba","wnba"]) for(const cf of CONFIG[lg].confs){
-      const a=s.order[lg]?.[cf.key];
-      if(Array.isArray(a)&&a.length===DEFAULTS[lg][cf.key].length) order[lg][cf.key]=[...a];
-    }
-    if(s.picks&&typeof s.picks==="object") picks=s.picks;
-    if(s.allstars) for(const lg of ["nba","wnba"]) for(const cf of CONFIG[lg].confs){
-      if(s.allstars[lg]?.[cf.key]) allstars[lg][cf.key]={...s.allstars[lg][cf.key]};
-    }
-    if(s.awards) for(const lg of ["nba","wnba"]){
-      if(s.awards[lg]) awards[lg]={...s.awards[lg]};
-    }
-    return true;
+  const COL_W=360;
+  function xCol(title){ const c=el('div','xs-col'); if(title) c.appendChild(el('div','xs-col-title',title)); return c; }
+  function xSection(title){ return el('div','aw-section-title',title); }
+
+  function exportStandings(){
+    const cols=[];
+    const cuts=CONFIG[league].cutlines;
+    CONFIG[league].confs.forEach(cf=>{
+      const col=xCol(CONFIG[league].confs.length>1?SECTION_TITLE[cf.key]:'Standings');
+      order[league][cf.key].forEach((abbr,i)=>{
+        const row=makeRow(abbr); row.querySelector('.seed').textContent=i+1;
+        const cl=cuts.find(c=>c.after===i+1);
+        if(cl){ row.classList.add('cut', cl.style==='dotted'?'cut-dotted':'cut-solid'); row.dataset.line=cl.label; }
+        col.appendChild(row);
+      });
+      cols.push(col);
+    });
+    return {cols};
   }
-  function shareURL(){
-    const code=encodeState();
-    const base=location.href.split('#')[0];
-    return `${base}#${code}`;
+  function exportBracket(){
+    renderBracket();
+    const body=document.getElementById('bracket-body');
+    const kids=[...body.children];
+    const cols=[], below=[];
+    // Conference brackets: title + scroll pairs go side by side
+    for(let i=0;i<kids.length;i++){
+      if(kids[i].classList.contains('bk-section-title') && kids[i+1]?.classList.contains('bk-scroll')){
+        const col=xCol(); col.style.width='auto'; col.style.flex='none';
+        col.appendChild(kids[i].cloneNode(true)); col.appendChild(kids[i+1].cloneNode(true));
+        cols.push(col); i++;
+      } else below.push(kids[i].cloneNode(true));
+    }
+    if(!CONFIG[league].finals){
+      // WNBA: champion + FMVP sit in a column beside the single bracket
+      const side=xCol(); below.forEach(n=>side.appendChild(n)); cols.push(side);
+      return {cols};
+    }
+    // Traditional layout: West flows right, Finals in the middle, East mirrored flowing left
+    const center=xCol(); center.classList.add('xs-center'); below.forEach(n=>center.appendChild(n));
+    const east=cols[1];
+    east.querySelector('.bk').classList.add('rev');
+    east.querySelector('.bk-section-title').style.textAlign='right';
+    return {cols:[cols[0], center, east], centered:true};
+  }
+  function exportAllstars(){
+    const cols=[], saved=asConf;
+    CONFIG[league].confs.forEach(cf=>{
+      asConf=cf.key;
+      const col=xCol(CONFIG[league].confs.length>1?SECTION_TITLE[cf.key]:'All-Stars');
+      let g=null, any=false;
+      CONFIG[league].asSlots.forEach(slot=>{
+        if(!allstars[league][cf.key][slot.id]) return;
+        if(slot.g!==g){ g=slot.g; col.appendChild(xSection(g)); }
+        col.appendChild(asSlotRow(slot)); any=true;
+      });
+      if(any) cols.push(col);
+    });
+    asConf=saved;
+    return {cols};
+  }
+  function exportAwards(){
+    const cfg=AWARDS_CONFIG[league], A=awards[league];
+    const ind=xCol('Individual Awards');
+    let anyInd=false;
+    cfg.individual.forEach(aw=>{
+      if(A[aw.id]){ ind.appendChild(awRow(aw.id,aw.label,aw.emoji,aw.pos)); anyInd=true; }
+      if(A[aw.id+'_2']){ ind.appendChild(awRow(aw.id+'_2',aw.label,'2nd',aw.pos,true)); anyInd=true; }
+      if(A[aw.id+'_3']){ ind.appendChild(awRow(aw.id+'_3',aw.label,'3rd',aw.pos,true)); anyInd=true; }
+    });
+    const lg=xCol(league==='nba'?'All-NBA':'All-WNBA'), def=xCol('All-Defensive');
+    let anyLg=false, anyDef=false;
+    const posLabels={G:'Guard',F:'Forward/Center',ANY:'Player'};
+    cfg.allteams.forEach(team=>{
+      const filled=team.slots.filter(s=>A[s.id]); if(!filled.length) return;
+      const isDef=/Defensive/.test(team.team), col=isDef?def:lg;
+      col.appendChild(xSection(team.team));
+      filled.forEach(s=>col.appendChild(awRow(s.id,posLabels[s.pos]||s.pos,null,s.pos)));
+      if(isDef) anyDef=true; else anyLg=true;
+    });
+    return {cols:[anyInd&&ind, anyLg&&lg, anyDef&&def].filter(Boolean)};
   }
 
-  // Modal wiring
-  const shareModalBackdrop=document.getElementById('share-modal-backdrop');
-  const shareUrlInput=document.getElementById('share-url-input');
-  const shareToast=document.getElementById('share-toast');
-  let shareToastT;
-  function showShareToast(msg){
-    shareToast.textContent=msg;
-    clearTimeout(shareToastT);
-    shareToastT=setTimeout(()=>shareToast.textContent='',2200);
+  async function doExport(){
+    const builders={standings:exportStandings, bracket:exportBracket, allstars:exportAllstars, awards:exportAwards};
+    const titles={standings:'Standings', bracket:'Playoffs', allstars:'All-Stars', awards:'Awards'};
+    const {cols,foot,centered}=builders[page]();
+    if(!cols.length){ showExportToast('Nothing picked on this tab yet'); return; }
+    showExportToast('Building image…',15000);
+    const h2c=await loadH2C().catch(()=>null);
+    if(!h2c){ showExportToast('⚠ Could not load image library'); return; }
+
+    const stage=el('div','xs');
+    const hd=el('div','xs-head');
+    hd.appendChild(el('div','xs-title',`${CONFIG[league].label} ${titles[page]}`));
+    stage.appendChild(hd);
+    const row=el('div','xs-cols'); if(centered) row.style.alignItems='center';
+    cols.forEach(c=>row.appendChild(c)); stage.appendChild(row);
+    if(foot) stage.appendChild(foot);
+    document.body.appendChild(stage);
+    // Redraw bracket connector lines inside the clone at their new positions
+    stage.querySelectorAll('.bk').forEach(drawConnectors);
+    await document.fonts?.ready;
+    const bg=getComputedStyle(document.body).getPropertyValue('--bg-top').trim()||'#0c1f44';
+    try{
+      const canvas=await h2c(stage,{backgroundColor:bg, scale:2, useCORS:true, logging:false});
+      const a=document.createElement('a');
+      a.download=`${league}-${page}.png`; a.href=canvas.toDataURL('image/png'); a.click();
+      showExportToast('✓ Image saved!');
+    } finally { stage.remove(); }
   }
-  document.getElementById('share-btn').addEventListener('click',()=>{
-    shareUrlInput.value=shareURL();
-    shareModalBackdrop.classList.add('show');
-    shareUrlInput.select();
-  });
-  document.getElementById('share-copy-btn').addEventListener('click',async()=>{
-    const url=shareURL();
-    shareUrlInput.value=url;
-    try{ await navigator.clipboard.writeText(url); showShareToast('✓ Link copied!'); }
-    catch(e){
-      shareUrlInput.select();
-      document.execCommand('copy');
-      showShareToast('✓ Link copied!');
-    }
-  });
-  document.getElementById('share-close-btn').addEventListener('click',()=>{
-    shareModalBackdrop.classList.remove('show');
-  });
-  shareModalBackdrop.addEventListener('click',e=>{
-    if(e.target===shareModalBackdrop) shareModalBackdrop.classList.remove('show');
-  });
-  document.getElementById('share-load-btn').addEventListener('click',()=>{
-    const raw=document.getElementById('share-import-input').value.trim();
-    const code=raw.includes('#')?raw.split('#').pop():raw;
-    const s=decodeState(code);
-    if(!s){ showShareToast('⚠ Invalid code'); return; }
-    applyState(s);
-    save();
-    document.body.classList.toggle('wnba',league==='wnba');
-    current=CONFIG[league].confs[0].key; asConf=CONFIG[league].confs[0].key;
-    buildLeagueToggle(); applyWordmark();
-    setPage('standings');
-    shareModalBackdrop.classList.remove('show');
-    showShareToast('✓ Picks loaded!');
+  document.getElementById('export-btn').addEventListener('click', ()=>{
+    doExport().catch(()=>showExportToast('⚠ Export failed'));
   });
 
   (async () => {
-    // Check URL hash first — shared link takes priority
-    const hash=location.hash.slice(1);
-    if(hash){
-      const s=decodeState(hash);
-      if(s&&applyState(s)){
-        // loaded from URL — skip storage load
-        document.body.classList.toggle('wnba',league==='wnba');
-        current=CONFIG[league].confs[0].key; asConf=CONFIG[league].confs[0].key;
-        buildLeagueToggle(); applyWordmark();
-        setPage('standings');
-        fetchLiveRosters('nba');
-        fetchLiveRosters('wnba');
-        return;
-      }
-    }
-    // No valid hash — load from storage as normal
     await load();
     document.body.classList.toggle("wnba", league==="wnba");
     current=CONFIG[league].confs[0].key; asConf=CONFIG[league].confs[0].key;
     buildLeagueToggle(); applyWordmark();
     setPage("standings");
-    // Kick off roster fetches in background immediately
     fetchLiveRosters("nba");
     fetchLiveRosters("wnba");
   })();
