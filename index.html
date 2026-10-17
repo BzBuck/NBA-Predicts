@@ -61,19 +61,32 @@
   .list{position:relative;}
   .row{position:relative;display:flex;align-items:center;gap:10px;height:var(--rowH);margin-bottom:9px;user-select:none;}
   .seed{width:30px;flex:none;text-align:right;font-weight:800;font-size:21px;font-variant-numeric:tabular-nums;color:var(--cream);}
-  .card{flex:1;display:flex;align-items:center;gap:11px;height:100%;background:var(--card);border:1px solid var(--card-edge);border-radius:12px;padding:0 8px 0 9px;box-shadow:0 1px 2px rgba(0,0,0,.25);}
+  .card{flex:1;min-width:0;display:flex;align-items:center;gap:11px;height:100%;background:var(--card);border:1px solid var(--card-edge);border-radius:12px;padding:0 8px 0 9px;box-shadow:0 1px 2px rgba(0,0,0,.25);}
   .badge{width:34px;height:34px;flex:none;position:relative;display:flex;align-items:center;justify-content:center;}
   .logo{width:34px;height:34px;object-fit:contain;display:block;}
   .chip{position:absolute;inset:0;border-radius:8px;display:none;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:11px;letter-spacing:.3px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);}
-  .name{flex:1;color:var(--ink);font-weight:700;font-size:16.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .name{flex:1;min-width:0;color:var(--ink);font-weight:700;font-size:16.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .rec{flex:none;display:flex;align-items:center;gap:1px;font-variant-numeric:tabular-nums;}
   .wins{appearance:none;-moz-appearance:textfield;width:34px;height:30px;border:1px solid var(--card-edge);border-radius:7px;background:#fff;color:var(--ink);font-family:inherit;font-weight:800;font-size:14px;text-align:center;padding:0;}
   .wins::-webkit-outer-spin-button,.wins::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
   .wins::placeholder{color:#a3abbd;font-weight:700;}
   .wins:focus{outline:2px solid var(--focus);outline-offset:1px;}
   .loss{font-size:14px;font-weight:800;color:#6f7ea3;min-width:24px;}
+  .win-check{font-size:12px;font-weight:700;line-height:1.45;margin:-6px 2px 14px;color:var(--cream-dim);}
+  .win-check:empty{display:none;}
+  .win-check.ok{color:var(--green);}
+  .win-check.bad{color:#ff8a80;}
   .rec-txt{flex:none;font-size:15px;font-weight:800;color:#6f7ea3;font-variant-numeric:tabular-nums;}
   .nudge{display:flex;flex-direction:column;flex:none;}
+  @media (max-width:480px){
+    .row{gap:6px;}
+    .seed{width:22px;font-size:18px;}
+    .card{gap:7px;padding:0 4px 0 7px;}
+    .badge,.logo{width:28px;height:28px;}
+    .name{font-size:15px;}
+    .nudge button{width:24px;}
+    .grip{width:26px;}
+  }
   .nudge button{appearance:none;border:0;background:transparent;color:#8b93a6;cursor:pointer;width:30px;height:24px;display:flex;align-items:center;justify-content:center;padding:0;}
   .nudge button:active{color:var(--ink);}
   .nudge button:disabled{opacity:.25;cursor:default;}
@@ -300,6 +313,7 @@
   <section id="page-standings" class="page active">
     <div class="toggle" id="stand-toggle" role="tablist" aria-label="Conference"></div>
     <div class="hint" id="stand-hint"></div>
+    <div class="win-check" id="win-check"></div>
     <div class="list" id="list" aria-label="Seed order list"></div>
   </section>
 
@@ -625,7 +639,7 @@
 
   const CONFIG = {
     nba:{
-      label:"NBA", espn:"nba", seasonGames:82,
+      label:"NBA", espn:"nba", seasonGames:82, confGames:52,
       confs:[{key:"west",label:"WEST"},{key:"east",label:"EAST"}],
       teams:NBA_TEAMS, players:NBA_PLAYERS, asSlots:NBA_AS_SLOTS,
       cutlines:[{after:6,style:"dotted",label:"PLAY-IN"},{after:10,style:"solid",label:"LOTTERY"}],
@@ -739,13 +753,43 @@
     if(!keys.includes(asConf)) asConf=keys[0];
   }
 
+  // Validate projected wins against what the schedule makes possible
+  function checkWins(){
+    const box=document.getElementById("win-check"), C=CONFIG[league], G=C.seasonGames;
+    const all=Object.keys(TEAMS[league]), W=wins[league];
+    const filled=all.filter(a=>W[a]!=null), n=all.length;
+    const total=filled.reduce((t,a)=>t+W[a],0), need=n*G/2;
+    const msgs=[];
+    if(filled.length<n){
+      const left=need-total, open=n-filled.length;
+      if(left<0) msgs.push(`Wins already total ${total} — the whole league only has ${need}.`);
+      else if(left>open*G) msgs.push(`${left} wins are left for ${open} team${open>1?"s":""} — more than they can win.`);
+      box.className="win-check"+(msgs.length?" bad":"");
+      box.textContent=msgs[0]||(filled.length?`${filled.length}/${n} teams entered · ${left} wins left to give out`:"");
+      return;
+    }
+    if(total!==need) msgs.push(`Wins total ${total}, but every game has one winner so it must be exactly ${need} (${Math.abs(total-need)} too ${total>need?"many":"few"}).`);
+    if(C.confGames && C.confs.length>1){
+      const cross=n/2*(G-C.confGames); // games between conferences
+      C.confs.forEach(cf=>{
+        const teams=all.filter(a=>TEAMS[league][a].conf===cf.key), m=teams.length;
+        const cw=teams.reduce((t,a)=>t+W[a],0);
+        const lo=m*C.confGames/2, hi=lo+cross;
+        if(cw<lo) msgs.push(`The ${labelOf(cf.key)} totals ${cw} wins — at least ${lo} are guaranteed from games within the conference.`);
+        else if(cw>hi) msgs.push(`The ${labelOf(cf.key)} totals ${cw} wins — at most ${hi} are possible even sweeping every cross-conference game.`);
+      });
+    }
+    box.className="win-check "+(msgs.length?"bad":"ok");
+    box.textContent=msgs.length?msgs.join(" "):`Win totals check out: ${need} wins and ${need} losses.`;
+  }
+
   function render(){
     clampConfs();
     document.getElementById("stand-hint").textContent=CONFIG[league].standHint;
     buildToggle("stand-toggle", CONFIG[league].confs, current, setConf);
     list.innerHTML="";
     order[league][current].forEach(abbr=>list.appendChild(makeRow(abbr)));
-    paint();
+    paint(); checkWins();
   }
   function paint(){
     const slots=[...list.querySelectorAll(".slot")];
@@ -796,7 +840,7 @@
       wins[league][abbr]=w;
     }
     inp.nextElementSibling.textContent=lossTxt(abbr);
-    save();
+    checkWins(); save();
   });
   list.addEventListener("pointerdown", e=>{
     if(!e.target.closest(".grip")) return;
