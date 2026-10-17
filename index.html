@@ -66,6 +66,13 @@
   .logo{width:34px;height:34px;object-fit:contain;display:block;}
   .chip{position:absolute;inset:0;border-radius:8px;display:none;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:11px;letter-spacing:.3px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);}
   .name{flex:1;color:var(--ink);font-weight:700;font-size:16.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .rec{flex:none;display:flex;align-items:center;gap:1px;font-variant-numeric:tabular-nums;}
+  .wins{appearance:none;-moz-appearance:textfield;width:34px;height:30px;border:1px solid var(--card-edge);border-radius:7px;background:#fff;color:var(--ink);font-family:inherit;font-weight:800;font-size:14px;text-align:center;padding:0;}
+  .wins::-webkit-outer-spin-button,.wins::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .wins::placeholder{color:#a3abbd;font-weight:700;}
+  .wins:focus{outline:2px solid var(--focus);outline-offset:1px;}
+  .loss{font-size:14px;font-weight:800;color:#6f7ea3;min-width:24px;}
+  .rec-txt{flex:none;font-size:15px;font-weight:800;color:#6f7ea3;font-variant-numeric:tabular-nums;}
   .nudge{display:flex;flex-direction:column;flex:none;}
   .nudge button{appearance:none;border:0;background:transparent;color:#8b93a6;cursor:pointer;width:30px;height:24px;display:flex;align-items:center;justify-content:center;padding:0;}
   .nudge button:active{color:var(--ink);}
@@ -567,7 +574,7 @@
   };  const SECTION_TITLE = {west:"Western Conference", east:"Eastern Conference", all:"Playoff Bracket"};
   // Hardcoded ESPN team IDs — stable, never change. Avoids /teams endpoint which blocks file:// origins.
   const ESPN_IDS = {
-    nba:[["ATL",1],["BOS",2],["NOP",3],["CHI",4],["CLE",5],["DAL",6],["DEN",7],["DET",8],["GSW",9],["HOU",10],["IND",11],["LAC",12],["LAL",13],["MEM",14],["MIA",15],["MIN",16],["BKN",17],["NYK",18],["ORL",19],["PHI",20],["PHX",21],["POR",22],["SAC",23],["SAS",24],["OKC",25],["UTA",26],["WAS",27],["TOR",28],["MIL",29],["CHA",30]],
+    nba:[["ATL",1],["BOS",2],["NOP",3],["CHI",4],["CLE",5],["DAL",6],["DEN",7],["DET",8],["GSW",9],["HOU",10],["IND",11],["LAC",12],["LAL",13],["MIA",14],["MIL",15],["MIN",16],["BKN",17],["NYK",18],["ORL",19],["PHI",20],["PHX",21],["POR",22],["SAC",23],["SAS",24],["OKC",25],["UTA",26],["WAS",27],["TOR",28],["MEM",29],["CHA",30]],
     wnba:[["ATL",20],["CHI",19],["CONN",18],["DAL",3],["GSV",129689],["IND",5],["LV",17],["LA",6],["MIN",8],["NY",9],["PHX",11],["POR",132052],["SEA",14],["TOR",131935],["WAS",16]],
   };
   async function fetchLiveRosters(lg){
@@ -618,20 +625,20 @@
 
   const CONFIG = {
     nba:{
-      label:"NBA", espn:"nba",
+      label:"NBA", espn:"nba", seasonGames:82,
       confs:[{key:"west",label:"WEST"},{key:"east",label:"EAST"}],
       teams:NBA_TEAMS, players:NBA_PLAYERS, asSlots:NBA_AS_SLOTS,
       cutlines:[{after:6,style:"dotted",label:"PLAY-IN"},{after:10,style:"solid",label:"LOTTERY"}],
       finals:true, finalsLabel:"NBA Finals", champLabel:"NBA CHAMPION",
-      standHint:"Drag the grip ⋮⋮ to reorder, or tap the arrows. Lines mark the play-in (seeds 7–10) and lottery (11–15).",
+      standHint:"Drag the grip ⋮⋮ to reorder, or tap the arrows. Enter projected wins in the W box. Lines mark the play-in (seeds 7–10) and lottery (11–15).",
     },
     wnba:{
-      label:"WNBA", espn:"wnba",
+      label:"WNBA", espn:"wnba", seasonGames:44,
       confs:[{key:"all",label:"LEAGUE"}],
       teams:WNBA_TEAMS, players:WNBA_PLAYERS, asSlots:WNBA_AS_SLOTS,
       cutlines:[{after:8,style:"solid",label:"PLAYOFFS"}],
       finals:false, champLabel:"WNBA CHAMPION",
-      standHint:"Drag the grip ⋮⋮ to reorder, or tap the arrows. The WNBA uses one league-wide table — the top 8 make the playoffs.",
+      standHint:"Drag the grip ⋮⋮ to reorder, or tap the arrows. Enter projected wins in the W box. The WNBA uses one league-wide table — the top 8 make the playoffs.",
     },
   };
 
@@ -646,6 +653,7 @@
   let order=JSON.parse(JSON.stringify(DEFAULTS));
   let picks={};
   let games={}; // matchId -> series length
+  const wins={nba:{},wnba:{}}; // abbr -> projected regular-season wins
   const awardRU={nba:{},wnba:{}}; // awardId -> runner-ups enabled
   const allstars={nba:{},wnba:{}};
   for(const lg of ["nba","wnba"]) for(const cf of CONFIG[lg].confs) allstars[lg][cf.key]={};
@@ -668,7 +676,7 @@
   }
 
   const store=(window.storage && typeof window.storage.set==="function") ? window.storage : null;
-  async function save(){ if(!store) return; try{ await store.set("rnp", JSON.stringify({league,order,picks,games,allstars,awards,awardRU}), false); }catch(e){} }
+  async function save(){ if(!store) return; try{ await store.set("rnp", JSON.stringify({league,order,picks,games,wins,allstars,awards,awardRU}), false); }catch(e){} }
   async function load(){
     if(!store) return;
     try{
@@ -682,6 +690,7 @@
         }
         if(o.picks && typeof o.picks==="object") picks=o.picks;
         if(o.games && typeof o.games==="object") games=o.games;
+        if(o.wins){ for(const lg of ["nba","wnba"]) if(o.wins[lg]) Object.assign(wins[lg],o.wins[lg]); }
         if(o.awardRU){ for(const lg of ["nba","wnba"]) if(o.awardRU[lg]) Object.assign(awardRU[lg],o.awardRU[lg]); }
         if(o.awards && typeof o.awards==="object"){ for(const lg of ["nba","wnba"]) if(o.awards[lg]) awards[lg]={...o.awards[lg]}; }
         if(o.allstars) for(const lg of ["nba","wnba"]) for(const cf of CONFIG[lg].confs){
@@ -702,6 +711,8 @@
     });
   }
 
+  const lossTxt=abbr=>{ const w=wins[league][abbr]; return w==null?"":"–"+(CONFIG[league].seasonGames-w); };
+  const recordTxt=abbr=>{ const w=wins[league][abbr]; return w==null?"":w+"–"+(CONFIG[league].seasonGames-w); };
   function makeRow(abbr){
     const t=team(abbr);
     const row=el("div","row slot"); row.dataset.abbr=abbr;
@@ -710,6 +721,7 @@
       <div class="card">
         <span class="badge"><img class="logo" alt="${t.name} logo" src="${logoURL(t)}"><span class="chip" style="background:${t.color}">${t.abbr}</span></span>
         <span class="name">${t.name}</span>
+        <span class="rec"><input class="wins" type="number" inputmode="numeric" min="0" max="${CONFIG[league].seasonGames}" placeholder="W" aria-label="${t.name} projected wins" value="${wins[league][abbr]??""}"><span class="loss">${lossTxt(abbr)}</span></span>
         <span class="nudge">
           <button class="up" aria-label="Move ${t.name} up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 14 12 8 18 14"/></svg></button>
           <button class="down" aria-label="Move ${t.name} down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 10 12 16 18 10"/></svg></button>
@@ -771,6 +783,20 @@
     if(!sib||!sib.classList.contains("row")) return;
     flip(()=>{ if(up) list.insertBefore(row,sib); else list.insertBefore(sib,row); });
     syncFromDOM(); paint(); save();
+  });
+  list.addEventListener("input", e=>{
+    const inp=e.target.closest(".wins"); if(!inp) return;
+    const abbr=inp.closest(".row.slot").dataset.abbr, max=CONFIG[league].seasonGames;
+    const raw=inp.value.trim();
+    if(raw===""){ delete wins[league][abbr]; }
+    else {
+      let w=Math.max(0,Math.min(max,Math.round(Number(raw))));
+      if(!Number.isFinite(w)) return;
+      if(String(w)!==raw) inp.value=w;
+      wins[league][abbr]=w;
+    }
+    inp.nextElementSibling.textContent=lossTxt(abbr);
+    save();
   });
   list.addEventListener("pointerdown", e=>{
     if(!e.target.closest(".grip")) return;
@@ -961,7 +987,7 @@
       body.appendChild(buildSingleChampion(CONFIG[league].confs[0].key));
     }
     body.appendChild(el("div","bk-section-title","Finals MVP"));
-    body.appendChild(awRow("fmvp","Finals MVP","🏅","ANY"));
+    body.appendChild(awRow("fmvp","Finals MVP","","ANY"));
     requestAnimationFrame(()=> body.querySelectorAll(".bk").forEach(drawConnectors));
   }
   document.getElementById("bracket-body").addEventListener("click", e=>{
@@ -1109,25 +1135,25 @@
   const AWARDS_CONFIG = {
     nba:{
       individual:[
-        {id:"mvp",       label:"MVP",              emoji:"🏆", pos:"ANY"},
-        {id:"dpoy",      label:"Def. Player",      emoji:"🛡️",  pos:"ANY"},
-        {id:"roy",       label:"Rookie of Year",   emoji:"🌟", pos:"ANY"},
-        {id:"mip",       label:"Most Improved",    emoji:"📈", pos:"ANY"},
-        {id:"6man",      label:"Sixth Man",         emoji:"🔥", pos:"ANY"},
-        {id:"coy",       label:"Coach of Year",    emoji:"📋", pos:"COACH"},
+        {id:"mvp",       label:"MVP", pos:"ANY"},
+        {id:"dpoy",      label:"Def. Player",  pos:"ANY"},
+        {id:"roy",       label:"Rookie of Year", pos:"ANY"},
+        {id:"mip",       label:"Most Improved", pos:"ANY"},
+        {id:"6man",      label:"Sixth Man", pos:"ANY"},
+        {id:"coy",       label:"Coach of Year", pos:"COACH"},
       ],
       allteams:[
         {team:"1st All-NBA", slots:[
-          {id:"a1g1",pos:"G"},{id:"a1g2",pos:"G"},
-          {id:"a1f1",pos:"F"},{id:"a1f2",pos:"F"},{id:"a1c1",pos:"F"},
+          {id:"a1g1",pos:"ANY"},{id:"a1g2",pos:"ANY"},
+          {id:"a1f1",pos:"ANY"},{id:"a1f2",pos:"ANY"},{id:"a1c1",pos:"ANY"},
         ]},
         {team:"2nd All-NBA", slots:[
-          {id:"a2g1",pos:"G"},{id:"a2g2",pos:"G"},
-          {id:"a2f1",pos:"F"},{id:"a2f2",pos:"F"},{id:"a2c1",pos:"F"},
+          {id:"a2g1",pos:"ANY"},{id:"a2g2",pos:"ANY"},
+          {id:"a2f1",pos:"ANY"},{id:"a2f2",pos:"ANY"},{id:"a2c1",pos:"ANY"},
         ]},
         {team:"3rd All-NBA", slots:[
-          {id:"a3g1",pos:"G"},{id:"a3g2",pos:"G"},
-          {id:"a3f1",pos:"F"},{id:"a3f2",pos:"F"},{id:"a3c1",pos:"F"},
+          {id:"a3g1",pos:"ANY"},{id:"a3g2",pos:"ANY"},
+          {id:"a3f1",pos:"ANY"},{id:"a3f2",pos:"ANY"},{id:"a3c1",pos:"ANY"},
         ]},
         {team:"1st All-Defensive", slots:[1,2,3,4,5].map(i=>({id:"d1_"+i,pos:"ANY"}))},
         {team:"2nd All-Defensive", slots:[1,2,3,4,5].map(i=>({id:"d2_"+i,pos:"ANY"}))},
@@ -1135,12 +1161,12 @@
     },
     wnba:{
       individual:[
-        {id:"mvp",       label:"MVP",              emoji:"🏆", pos:"ANY"},
-        {id:"dpoy",      label:"Def. Player",      emoji:"🛡️",  pos:"ANY"},
-        {id:"roy",       label:"Rookie of Year",   emoji:"🌟", pos:"ANY"},
-        {id:"mip",       label:"Most Improved",    emoji:"📈", pos:"ANY"},
-        {id:"6woman",    label:"Sixth Player",       emoji:"🔥", pos:"ANY"},
-        {id:"coy",       label:"Coach of Year",    emoji:"📋", pos:"COACH"},
+        {id:"mvp",       label:"MVP", pos:"ANY"},
+        {id:"dpoy",      label:"Def. Player",  pos:"ANY"},
+        {id:"roy",       label:"Rookie of Year", pos:"ANY"},
+        {id:"mip",       label:"Most Improved", pos:"ANY"},
+        {id:"6woman",    label:"Sixth Player", pos:"ANY"},
+        {id:"coy",       label:"Coach of Year", pos:"COACH"},
       ],
       allteams:[
         {team:"1st All-WNBA", slots:[
@@ -1170,7 +1196,7 @@
     // Individual awards
     body.appendChild(el("div","aw-section-title","Individual Awards"));
     cfg.individual.forEach(aw=>{
-      body.appendChild(awRow(aw.id, aw.label, aw.emoji, aw.pos));
+      body.appendChild(awRow(aw.id, aw.label, "", aw.pos));
       const on=!!awardRU[league][aw.id];
       if(on){
         body.appendChild(awRow(aw.id+"_2", aw.label, "2nd", aw.pos, true));
@@ -1190,11 +1216,12 @@
     });
   }
 
-  function awRow(id, label, emoji, pos, ru){
+  // badge: null → position tag, "" → none, otherwise text (e.g. "2nd")
+  function awRow(id, label, badge, pos, ru){
     const pick = awards[league][id];
     const row = el("div","aw-row"+(ru?" ru":"")+(pick?"":" empty")); row.dataset.awid=id; row.dataset.pos=pos;
-    if(emoji) row.appendChild(el("span","aw-trophy",emoji));
-    else {
+    if(badge) row.appendChild(el("span","aw-trophy",badge));
+    else if(badge==null){
       const posTag = el("span","aw-pos-label"); posTag.textContent = pos==="ANY"?"PL":pos; row.appendChild(posTag);
     }
     row.appendChild(el("span","aw-label",label));
@@ -1319,6 +1346,7 @@
       const col=xCol(CONFIG[league].confs.length>1?SECTION_TITLE[cf.key]:'Standings');
       order[league][cf.key].forEach((abbr,i)=>{
         const row=makeRow(abbr); row.querySelector('.seed').textContent=i+1;
+        row.querySelector('.rec').replaceWith(el('span','rec-txt',recordTxt(abbr)));
         const cl=cuts.find(c=>c.after===i+1);
         if(cl){ row.classList.add('cut', cl.style==='dotted'?'cut-dotted':'cut-solid'); row.dataset.line=cl.label; }
         col.appendChild(row);
@@ -1373,7 +1401,7 @@
     const ind=xCol('Individual Awards');
     let anyInd=false;
     cfg.individual.forEach(aw=>{
-      if(A[aw.id]){ ind.appendChild(awRow(aw.id,aw.label,aw.emoji,aw.pos)); anyInd=true; }
+      if(A[aw.id]){ ind.appendChild(awRow(aw.id,aw.label,"",aw.pos)); anyInd=true; }
       if(A[aw.id+'_2']){ ind.appendChild(awRow(aw.id+'_2',aw.label,'2nd',aw.pos,true)); anyInd=true; }
       if(A[aw.id+'_3']){ ind.appendChild(awRow(aw.id+'_3',aw.label,'3rd',aw.pos,true)); anyInd=true; }
     });
